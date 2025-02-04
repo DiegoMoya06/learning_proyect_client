@@ -8,6 +8,7 @@ on:
 
 jobs:
   build:
+    name: Merge validation
     runs-on: ubuntu-latest
 
     steps:
