@@ -126,7 +126,7 @@ export default function Navbar() {
                     </Box>
                     <Box sx={{flexGrow: 0}}>
                         <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
+                            <IconButton onClick={handleOpenUserMenu} sx={{p: 0}} data-testid="avatar-icon-button">
                                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg"/>
                             </IconButton>
                         </Tooltip>
@@ -147,7 +147,7 @@ export default function Navbar() {
                             onClose={handleCloseUserMenu}
                         >
                             {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                                <MenuItem key={setting} onClick={handleCloseUserMenu} data-testid={`menu-item-${setting}`}>
                                     <Typography sx={{textAlign: 'center'}}>{setting}</Typography>
                                 </MenuItem>
                             ))}
