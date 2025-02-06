@@ -1,12 +1,10 @@
-import Navbar from "../Navbar";
+import {Container} from "@mui/material";
 
-
-export default function Dashboard(){
+export default function Dashboard() {
 
     return (
-        <>
-            <Navbar/>
+        <Container maxWidth="lg">
             Dashboard
-        </>
+        </Container>
     );
 }
