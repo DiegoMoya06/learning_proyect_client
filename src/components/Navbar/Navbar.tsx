@@ -14,6 +14,7 @@ import {
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import MenuIcon from '@mui/icons-material/Menu';
 import {useCallback, useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 const pages = ['Cards', 'Edit',];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -21,6 +22,8 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 export default function Navbar() {
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+
+    const navigate = useNavigate();
 
     const handleOpenNavMenu = useCallback((event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -37,28 +40,33 @@ export default function Navbar() {
         setAnchorElUser(null);
     }, []);
 
+    const navigateTo = useCallback((url: string) => {
+        navigate(url);
+    }, [navigate]);
+
     return (
-        <AppBar position="static">
+        <AppBar position="static" sx={{mb: 2}}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <LocalLibraryIcon sx={{display: {xs: 'none', md: 'flex'}, mr: 1}}/>
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="a"
-                        href="#app-bar-with-responsive-menu"
-                        sx={{
-                            mr: 2,
-                            display: {xs: 'none', md: 'flex'},
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                        }}
-                    >
-                        LOGO
-                    </Typography>
+                    <Button variant="text" size="large" sx={{color: 'white'}} onClick={() => navigateTo('/')}
+                            startIcon={<LocalLibraryIcon sx={{display: {xs: 'none', md: 'flex'}}}/>}>
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            component="a"
+                            sx={{
+                                mr: 2,
+                                display: {xs: 'none', md: 'flex'},
+                                fontFamily: 'monospace',
+                                fontWeight: 700,
+                                letterSpacing: '.3rem',
+                                color: 'inherit',
+                                textDecoration: 'none',
+                            }}
+                        >
+                            LOGO
+                        </Typography>
+                    </Button>
 
                     <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
                         <IconButton
@@ -117,7 +125,7 @@ export default function Navbar() {
                         {pages.map((page) => (
                             <Button
                                 key={page}
-                                onClick={handleCloseNavMenu}
+                                onClick={() => navigateTo('/cards')}
                                 sx={{my: 2, color: 'white', display: 'block'}}
                             >
                                 {page}
@@ -147,7 +155,8 @@ export default function Navbar() {
                             onClose={handleCloseUserMenu}
                         >
                             {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu} data-testid={`menu-item-${setting}`}>
+                                <MenuItem key={setting} onClick={handleCloseUserMenu}
+                                          data-testid={`menu-item-${setting}`}>
                                     <Typography sx={{textAlign: 'center'}}>{setting}</Typography>
                                 </MenuItem>
                             ))}
