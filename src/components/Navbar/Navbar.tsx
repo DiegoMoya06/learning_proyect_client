@@ -16,7 +16,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import {useCallback, useState} from "react";
 import {useNavigate} from "react-router-dom";
 
-const pages = ['Cards', 'Edit',];
+const pages = ['Library', 'Edit',];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 export default function Navbar() {
@@ -95,6 +95,7 @@ export default function Navbar() {
                             onClose={handleCloseNavMenu}
                             sx={{display: {xs: 'block', md: 'none'}}}
                         >
+                            {/*TODO: add here the navigation*/}
                             {pages.map((page) => (
                                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                                     <Typography sx={{textAlign: 'center'}}>{page}</Typography>
@@ -125,7 +126,7 @@ export default function Navbar() {
                         {pages.map((page) => (
                             <Button
                                 key={page}
-                                onClick={() => navigateTo('/cards')}
+                                onClick={() => navigateTo('/library')}
                                 sx={{my: 2, color: 'white', display: 'block'}}
                             >
                                 {page}

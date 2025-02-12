@@ -1,10 +1,11 @@
-import {Box, Button, Card, CardContent, Container, Typography} from "@mui/material";
-import {useCallback, useState} from "react";
+import {Box, Button, Card, CardContent, Container, Divider, Typography} from "@mui/material";
+import {useCallback, useEffect, useState} from "react";
 import ReplayIcon from '@mui/icons-material/Replay';
 import DoneIcon from '@mui/icons-material/Done';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import './cards.css';
-import {ShownCard} from "./CardsService.ts";
+import {CardsService, ShownCard} from "./CardsService.ts";
+import {useParams} from "react-router-dom";
 
 
 // TODO: remove when db is connected
@@ -52,6 +53,24 @@ const cards: ShownCard[] = [
 ];
 
 export default function Cards() {
+    let {deckId} = useParams();
+
+    const [dbCards, setDbCards] = useState<ShownCard[]>([]);
+
+    useEffect(() => {
+        if (deckId) {
+            CardsService.getAllCadsByDeckId(deckId).then((data) => {
+                setDbCards(data);
+            }).catch((error) => {
+                console.log("Error", error);
+            });
+        }
+    }, [deckId]);
+
+    useEffect(() => {
+        // TODO: remove later
+        console.log("CARDS", dbCards);
+    }, [dbCards]);
 
     const [selectedCard, setSelectedCard] = useState<ShownCard | null>(cards.find(card => card.order === 1) || null);
 
@@ -75,7 +94,7 @@ export default function Cards() {
                                 <Typography gutterBottom variant="h6">
                                     {selectedCard.title}
                                 </Typography>
-                                <hr/>
+                                <Divider/>
                             </Box>
 
                             <Box className="card_description">
