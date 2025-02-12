@@ -13,11 +13,12 @@ vi.mock('react-router-dom', async () => {
 });
 
 describe('Navbar', () => {
+    const navigate = vi.fn();
+
     beforeEach(() => {
+        vi.mocked(useNavigate).mockReturnValue(navigate);
         render(<Navbar/>);
     });
-
-    // TODO: add test to check the routing
 
     it('Should show navbar options menu', async () => {
         expect(await screen.findAllByText(/\blogo\b/i)).toHaveLength(2);
@@ -33,16 +34,22 @@ describe('Navbar', () => {
         expect(await screen.findByTestId(/\bmenu-item-Logout\b/i)).toBeInTheDocument();
     });
 
-    it('Should navigate', async () => {
-        // TODO: fix tests issues
-        const navigate = vi.fn();
-        vi.mocked(useNavigate).mockReturnValue(navigate);
+    // TODO: complete tests to check the routing
+    // TODO: (e.g., clicking on the wrong element or failure to navigate)
 
+    it('Should navigate', async () => {
         const libraries = await screen.findAllByText(/\blibrary\b/i);
+
         expect(libraries).toHaveLength(2);
         fireEvent.click(libraries[0]);
         expect(navigate).toHaveBeenCalledTimes(1);
         expect(navigate).toHaveBeenLastCalledWith("/library");
 
+        const logo = await screen.findAllByText(/\blogo\b/i);
+
+        expect(logo).toHaveLength(2);
+        fireEvent.click(logo[0]);
+        expect(navigate).toHaveBeenCalledTimes(2);
+        expect(navigate).toHaveBeenLastCalledWith("/");
     });
 });
