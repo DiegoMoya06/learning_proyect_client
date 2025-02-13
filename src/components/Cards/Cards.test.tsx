@@ -1,6 +1,6 @@
 import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 import Cards from "./Cards.tsx";
-import {ShownCard} from "./CardsService.ts";
+import {ShownCard} from "../../services/CardsService.ts";
 
 // TODO: remove when having real data
 const cards: ShownCard[] = [
