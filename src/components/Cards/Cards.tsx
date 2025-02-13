@@ -4,7 +4,7 @@ import ReplayIcon from '@mui/icons-material/Replay';
 import DoneIcon from '@mui/icons-material/Done';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import './cards.css';
-import {CardsService, ShownCard} from "./CardsService.ts";
+import {CardsService, ShownCard} from "../../services/CardsService.ts";
 import {useParams} from "react-router-dom";
 
 
