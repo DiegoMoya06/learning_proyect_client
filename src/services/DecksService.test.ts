@@ -1,6 +1,6 @@
 import {DecksService} from "./DecksService.ts";
 import {describe, expect, it, vi} from "vitest";
-import {Deck} from "../types/models/Deck.ts";
+import {DeckModel} from "../types/models/DeckModel.ts";
 import {deck1, deck2} from "../testData/deckData.ts";
 import axios from "axios";
 import {baseUrl} from "../utils.tsx";
@@ -13,7 +13,7 @@ describe('DecksService', () => {
     });
 
     it('Should get all decks succesfully', async () => {
-        const mockDecks: Deck[] = [deck1, deck2];
+        const mockDecks: DeckModel[] = [deck1, deck2];
 
         const getSpy = vi.spyOn(axios, "get").mockResolvedValue({data: mockDecks});
 

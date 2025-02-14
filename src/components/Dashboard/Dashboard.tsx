@@ -5,7 +5,7 @@ import {useCallback} from "react";
 const cards = [
     {
         id: 1,
-        title: 'Demo',
+        title: 'DeckDetails',
         description: 'Example of the application.',
     },
     {

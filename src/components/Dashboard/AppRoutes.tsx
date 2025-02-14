@@ -4,13 +4,13 @@ import Page from "../Page";
 import Cards from "../Cards";
 import Library from "../Library";
 import Login from "../Login";
-import Demo from "../Demo";
+import DeckDetails from "../Deck";
 
 
 export default function AppRoutes() {
     const dashboard = <Page><Dashboard/></Page>;
     const login = <Page><Login/></Page>;
-    const demo = <Page><Demo/></Page>;
+    const deckDetails = <Page><DeckDetails/></Page>;
     const library = <Page><Library/></Page>;
     const cardsView = <Page><Cards/></Page>;
 
@@ -19,7 +19,7 @@ export default function AppRoutes() {
             <>
                 <Route path={"/"} element={dashboard}/>
                 <Route path={"/login"} element={login}/>
-                <Route path={"/demo"} element={demo}/>
+                <Route path={"/deckDetails"} element={deckDetails}/>
                 <Route path={"library"} element={library}/>
                 <Route path={"/library/cards/:deckId"} element={cardsView}/>
             </>

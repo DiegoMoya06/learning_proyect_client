@@ -4,58 +4,19 @@ import ReplayIcon from '@mui/icons-material/Replay';
 import DoneIcon from '@mui/icons-material/Done';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import './cards.css';
-import {CardsService, ShownCard} from "../../services/CardsService.ts";
+import {CardsService} from "../../services/CardsService.ts";
 import {useParams} from "react-router-dom";
+import {CardModel} from "../../types/models/CardModel.ts";
+import {card1, card2, card3, card4} from "../../testData/cardData.ts";
 
 
 // TODO: remove when db is connected
-// TODO: add card interface when db is designed
-const cards: ShownCard[] = [
-    {
-        id: 1,
-        // TODO: long text to test css
-        // title: 'Plants Plants Plants Plants Plants Plants Plants Plants  Plants Plants Plants Plants Plants Plants Plants Plants Plants Plants Plants Plants Plants Plants Plants Plants ',
-        // description: 'Plants are essential for all life.' +
-        //     'Plants are essential for all life.' +
-        //     'Plants are essential for all life.' +
-        //     'Plants are essential for all life. Plants are essential for all life. ' +
-        //     'Plants are essential for all life. Plants are essential for all life. ' +
-        //     'Plants are essential for all life. Plants are essential for all life. ' +
-        //     'Plants are essential for all life. Plants are essential for all life. ' +
-        //     'Plants are essential for all life. Plants are essential for all life. ' +
-        //     'Plants are essential for all life. Plants are essential for all life. ' +
-        //     'Plants are essential for all life. Plants are essential for all life. ' +
-        //     'Plants are essential for all life. Plants are essential for all life. ' +
-        //     'Plants are essential for all life. Plants are essential for all life. ' +
-        //     'Plants are essential for all life. Plants are essential for all life. ' +
-        //     'Plants are essential for all life. Plants are essential for all life. ' +
-        //     'Plants are essential for all life. Plants are essential for all life. ' +
-        //     'Plants are essential for all life. Plants are essential for all life. ' +
-        //     'Plants are essential for all life. Plants are essential for all life. ' +
-        //     'Plants are essential for all life. Plants are essential for all life. ' +
-        //     'Plants are essential for all life. Plants are essential for all life.',
-        title: 'Plants',
-        description: 'Plants are essential for all life.',
-        order: 1
-    },
-    {
-        id: 2,
-        title: 'Animals',
-        description: 'Animals are a part of nature.',
-        order: 2
-    },
-    {
-        id: 3,
-        title: 'Humans',
-        description: 'Humans depend on plants and animals for survival.',
-        order: 3
-    },
-];
+const cards: CardModel[] = [card1, card2, card3, card4];
 
 export default function Cards() {
     let {deckId} = useParams();
 
-    const [dbCards, setDbCards] = useState<ShownCard[]>([]);
+    const [dbCards, setDbCards] = useState<CardModel[]>([]);
 
     useEffect(() => {
         if (deckId) {
@@ -72,7 +33,7 @@ export default function Cards() {
         console.log("CARDS", dbCards);
     }, [dbCards]);
 
-    const [selectedCard, setSelectedCard] = useState<ShownCard | null>(cards.find(card => card.order === 1) || null);
+    const [selectedCard, setSelectedCard] = useState<CardModel | null>(cards.find(card => card.rate === 1) || null);
 
     const handleRateCard = useCallback(() => {
         //     TODO: update rate of card
@@ -80,7 +41,7 @@ export default function Cards() {
             return;
         }
 
-        const nextCard = cards.find(card => card.order === selectedCard?.order + 1);
+        const nextCard = cards.find(card => card.rate === selectedCard?.rate + 1);
         setSelectedCard(nextCard ?? cards[0]);
     }, [selectedCard, cards]);
 

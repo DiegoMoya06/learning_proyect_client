@@ -3,12 +3,12 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import {useCallback, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {DecksService} from "../../services/DecksService.ts";
-import {Deck} from "../../types/models/Deck.ts";
+import {DeckModel} from "../../types/models/DeckModel.ts";
 
 export default function Library() {
     const navigate = useNavigate();
 
-    const [decks, setDecks] = useState<Deck[]>([]);
+    const [decks, setDecks] = useState<DeckModel[]>([]);
 
     useEffect(() => {
         DecksService.getAllDecks().then((data) => {
