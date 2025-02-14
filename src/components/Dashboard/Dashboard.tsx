@@ -1,4 +1,6 @@
 import {Box, Card, CardActionArea, CardContent, Container, Typography} from "@mui/material";
+import {useNavigate} from "react-router-dom";
+import {useCallback} from "react";
 
 const cards = [
     {
@@ -14,6 +16,11 @@ const cards = [
 ];
 
 export default function Dashboard() {
+    const navigate = useNavigate();
+
+    const handleNavigate = useCallback((url: string) => {
+        navigate(url);
+    }, []);
 
     return (
         <Container maxWidth="lg">
@@ -25,14 +32,13 @@ export default function Dashboard() {
                 sx={{
                     width: '100%',
                     display: 'flex',
-                    justifyContent: 'center'
+                    justifyContent: 'center',
                 }}
             >
                 {cards.map((card) => (
-                    <Card key={card.id} sx={{marginLeft: '3rem', width: '17rem'}}>
+                    <Card key={card.id} sx={{marginLeft: '3rem', width: '15rem', height: '7rem'}}>
                         <CardActionArea
-                            onClick={() => {
-                            }}
+                            onClick={() => handleNavigate(card.title.toLowerCase())}
                             sx={{
                                 height: '100%',
                                 '&[data-active]': {
