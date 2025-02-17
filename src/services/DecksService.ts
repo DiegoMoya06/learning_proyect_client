@@ -1,4 +1,4 @@
-import {baseUrl} from "../utils.tsx";
+import {baseUrl} from "../utils/utils.tsx";
 import axios from "axios";
 import {DeckModel} from "../types/models/DeckModel.ts";
 

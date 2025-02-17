@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {baseUrl} from "../utils.tsx";
+import {baseUrl} from "../utils/utils.tsx";
 import {CardModel} from "../types/models/CardModel.ts";
 
 const cardsUrl = "card/";

@@ -3,7 +3,7 @@ import {describe, expect, it, vi} from "vitest";
 import {DeckModel} from "../types/models/DeckModel.ts";
 import {deck1, deck2} from "../testData/deckData.ts";
 import axios from "axios";
-import {baseUrl} from "../utils.tsx";
+import {baseUrl} from "../utils/utils.tsx";
 
 vi.mock("axios");
 
