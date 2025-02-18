@@ -25,18 +25,12 @@ export default function DeckDetails() {
     const handleStartLearning = useCallback(() => navigate('../library/cards/' + deck?.id), [navigate, deck?.id]);
 
     useEffect(() => {
-        console.log("IS DEMOO",isDemo);
         if (isDemo) {
-            console.log("demoDeckObj", demoDeckObj);
             setDeck(demoDeckObj);
         } else {
             //     TODO: call service to fill cards
         }
     }, [isDemo, demoDeckObj]);
-
-    useEffect(() => {
-        console.log("PRINTING DECK", deck);
-    }, [deck]);
 
     return (
         <Container maxWidth="lg">
