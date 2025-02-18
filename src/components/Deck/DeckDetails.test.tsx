@@ -65,7 +65,7 @@ describe('DeckDetails Component', () => {
         );
 
         expect(screen.getByText('Total number of cards: '+deck1.cards?.length)).toBeInTheDocument();
-        expect(screen.getByText('3 card to learn')).toBeInTheDocument();
+        expect(screen.getByText('3 cards to learn')).toBeInTheDocument();
         expect(screen.getByText('1 card to repeat')).toBeInTheDocument();
     });
 
