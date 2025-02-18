@@ -21,7 +21,7 @@ describe('Navbar', () => {
     });
 
     it('Should show navbar options menu', async () => {
-        expect(await screen.findAllByText(/\blogo\b/i)).toHaveLength(2);
+        expect(await screen.findAllByText(/\blc\b/i)).toHaveLength(2);
         expect(await screen.findAllByText(/\blibrary\b/i)).toHaveLength(2);
         expect(await screen.findAllByText(/\edit\b/i)).toHaveLength(2);
     });
@@ -45,7 +45,7 @@ describe('Navbar', () => {
         expect(navigate).toHaveBeenCalledTimes(1);
         expect(navigate).toHaveBeenLastCalledWith("/library");
 
-        const logo = await screen.findAllByText(/\blogo\b/i);
+        const logo = await screen.findAllByText(/\blc\b/i);
 
         expect(logo).toHaveLength(2);
         fireEvent.click(logo[0]);

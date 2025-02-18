@@ -1,24 +1,11 @@
 import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 import Cards from "./Cards.tsx";
-import {ShownCard} from "../../services/CardsService.ts";
-
-// TODO: remove when having real data
-const cards: ShownCard[] = [
-    {
-        id: 1,
-        title: 'Plants',
-        description: 'Plants are essential for all life.',
-        order: 1
-    },
-    {
-        id: 2,
-        title: 'Animals',
-        description: 'Animals are a part of nature.',
-        order: 2
-    },
-];
+import {CardModel} from "../../types/models/CardModel.ts";
+import {card1, card2} from "../../testData/cardData.ts";
 
 describe('Card view', () => {
+    const cards: CardModel[] = [card1, card2];
+
     beforeEach(() => {
         render(<Cards/>);
     });

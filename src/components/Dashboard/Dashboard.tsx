@@ -1,25 +1,34 @@
 import {Box, Card, CardActionArea, CardContent, Container, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {useCallback} from "react";
+import {useAppDispatch} from "../../utils/store.ts";
+import {setDemoMode} from "../../slices/demoSlice.ts";
 
-const cards = [
+const optionDetails = [
     {
         id: 1,
         title: 'Demo',
         description: 'Example of the application.',
+        url: 'deckDetails'
     },
     {
         id: 2,
         title: 'Login',
         description: 'Start learning with your own decks and cards.',
+        url: 'login'
     },
 ];
 
 export default function Dashboard() {
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     const handleNavigate = useCallback((url: string) => {
-        navigate(url);
+        if (url === "deckDetails") {
+            dispatch(setDemoMode(true));
+        }
+
+        navigate(url, {state: {isDemo: true}});
     }, []);
 
     return (
@@ -35,10 +44,10 @@ export default function Dashboard() {
                     justifyContent: 'center',
                 }}
             >
-                {cards.map((card) => (
+                {optionDetails.map((card) => (
                     <Card key={card.id} sx={{marginLeft: '3rem', width: '15rem', height: '7rem'}}>
                         <CardActionArea
-                            onClick={() => handleNavigate(card.title.toLowerCase())}
+                            onClick={() => handleNavigate(card.url)}
                             sx={{
                                 height: '100%',
                                 '&[data-active]': {
