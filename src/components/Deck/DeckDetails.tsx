@@ -1,75 +1,83 @@
-import {useEffect, useMemo, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {useSelector} from "react-redux";
-import {demoDeckSelector, isDemoSelector} from "../../slices/demoSlice.ts";
+import {demoDeckSelector} from "../../slices/demoSlice.ts";
 import {DeckModel} from "../../types/models/DeckModel.ts";
-import {Box, Button, Card, CardActions, CardContent, CircularProgress, Container, Typography} from "@mui/material";
-
+import {Box, Button, Card, CardActions, CardContent, Chip, Container, Typography} from "@mui/material";
+import CircularProgressWithLabel from "./CircularProgressWithLabel.tsx";
+import PendingIcon from '@mui/icons-material/Pending';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import {useLocation, useNavigate} from "react-router-dom";
+import './deckDetails.css';
 
 export default function DeckDetails() {
-    // TODO: remove
-    // const dispatch = useAppDispatch();
-    const isDemo = useSelector(isDemoSelector);
+    const navigate = useNavigate();
+    const location = useLocation();
+
     const demoDeckObj = useSelector(demoDeckSelector);
 
     const [deck, setDeck] = useState<DeckModel>();
 
-    const learnedCards = useMemo(() =>
-        deck?.cards?.filter(card => card.displayedTimes === 0)?.length ?? 0, [deck]);
+    const isDemo = location.state.isDemo ?? false;
+    const cardsTotal = deck?.cards?.length ?? 0;
+    const learnedCards = deck?.cards?.filter((card) => card.displayedTimes > 0).length ?? 0;
+    const percentage = cardsTotal > 0 ? (learnedCards * 100) / cardsTotal : 0;
+
+    const handleStartLearning = useCallback(() => navigate('../library/cards/' + deck?.id), [navigate, deck?.id]);
 
     useEffect(() => {
-        if (isDemo && demoDeckObj.cards) {
+        console.log("IS DEMOO",isDemo);
+        if (isDemo) {
+            console.log("demoDeckObj", demoDeckObj);
             setDeck(demoDeckObj);
         } else {
             //     TODO: call service to fill cards
         }
-    }, []);
+    }, [isDemo, demoDeckObj]);
 
+    useEffect(() => {
+        console.log("PRINTING DECK", deck);
+    }, [deck]);
 
     return (
         <Container maxWidth="lg">
-            {/*TODO: remove*/}
-            {/*<Typography sx={{mt: 4, mb: 6}} variant="h6" component="div">*/}
-            {/*    Deck*/}
-            {/*</Typography>*/}
             <Card sx={{maxWidth: 345}}>
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
                         {deck?.name}
                     </Typography>
-                    <Typography variant="body2" sx={{color: 'text.secondary'}}>
+                    <Typography variant="body1" sx={{color: 'text.secondary'}}>
                         {deck?.description}
                     </Typography>
 
-                    <Box sx={{position: 'relative', display: 'inline-flex'}}>
-                        <CircularProgress variant="determinate"/>
-                        <Box
-                            sx={{
-                                top: 0,
-                                left: 0,
-                                bottom: 0,
-                                right: 0,
-                                position: 'absolute',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                            }}
-                        >
-                            <Typography
-                                variant="caption"
-                                component="div"
-                                sx={{color: 'text.secondary'}}
-                            >{`${Math.round(((deck?.cards?.length ?? 0) - learnedCards))}%`}</Typography>
+                    <Box sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
+                        margin: '2rem 2rem 0 2rem'
+                    }}>
+                        <Box className="centered_box">
+                            <CircularProgressWithLabel value={percentage}/>
+                        </Box>
+                        <Box className="centered_box" sx={{marginBottom: '1rem'}}>
+                            <Typography variant="body2" sx={{color: 'text.secondary'}}>
+                                {`Total number of cards: ${cardsTotal}`}
+                            </Typography>
+                        </Box>
+                        <Box className="centered_box" sx={{margin: '0.5rem'}}>
+                            <Chip sx={{margin: '0 0.2rem'}} icon={<PendingIcon/>}
+                                  label={`${(cardsTotal - learnedCards)} ${(cardsTotal - learnedCards) === 1 ? 'card' : 'cards'} to learn`}
+                                  variant="outlined"/>
+                            <Chip sx={{margin: '0 0.2rem'}} icon={<CheckCircleIcon/>}
+                                  label={`${learnedCards} ${learnedCards === 1 ? 'card' : 'cards'} to repeat`}
+                                  variant="outlined"/>
                         </Box>
                     </Box>
                 </CardContent>
-                <CardActions>
-                    <Button size="small">Start learning</Button>
+                <CardActions className="centered_box">
+                    <Button size="small" onClick={handleStartLearning} disabled={!deck?.id}>Start learning</Button>
                     <Button size="small">Show deck details</Button>
                 </CardActions>
             </Card>
-            <Box>
-
-            </Box>
         </Container>
     );
 }

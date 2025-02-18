@@ -64,7 +64,7 @@ export default function Navbar() {
                                 textDecoration: 'none',
                             }}
                         >
-                            LOGO
+                            LC
                         </Typography>
                     </Button>
 

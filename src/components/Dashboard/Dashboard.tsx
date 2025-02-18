@@ -24,11 +24,11 @@ export default function Dashboard() {
     const navigate = useNavigate();
 
     const handleNavigate = useCallback((url: string) => {
-        if (url === "deckDetails"){
+        if (url === "deckDetails") {
             dispatch(setDemoMode(true));
         }
 
-        navigate(url);
+        navigate(url, {state: {isDemo: true}});
     }, []);
 
     return (

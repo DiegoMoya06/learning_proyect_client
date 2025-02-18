@@ -30,7 +30,7 @@ export const card3: CardModel = {
     title: 'Fungi',
     description: 'Humans depend on plants and animals for survival.',
     rate: 1,
-    displayedTimes: 0,
+    displayedTimes: 1,
     created: new Date().toDateString(),
     updated: new Date().toDateString(),
     createdBy: user1.name,

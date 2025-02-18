@@ -22,8 +22,8 @@ const demoSlice = createSlice({
         setDemoMode(state, action: PayloadAction<boolean>) {
             return {...state, isShowingDemo: action.payload}
         },
-        upateCardRate(state, action: PayloadAction<CardModel>) {
-            if (!state.deck.cards) return {...state};
+        updateCardRate(state, action: PayloadAction<CardModel>) {
+            if (!state.deck.cards) return;
 
             return {
                 ...state,
@@ -41,7 +41,7 @@ const demoSlice = createSlice({
     },
 });
 
-export const {setDemoMode, upateCardRate} = demoSlice.actions;
+export const {setDemoMode, updateCardRate} = demoSlice.actions;
 export const isDemoSelector = (state:RootState): boolean => state.demoInfo.isShowingDemo;
 export const demoDeckSelector = (state:RootState): DeckModel => state.demoInfo.deck;
 export default demoSlice.reducer;

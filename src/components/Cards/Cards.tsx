@@ -40,9 +40,9 @@ export default function Cards() {
         if (!selectedCard) {
             return;
         }
+        const index = cards.findIndex(card => card.id === selectedCard?.id);
 
-        const nextCard = cards.find(card => card.rate === selectedCard?.rate + 1);
-        setSelectedCard(nextCard ?? cards[0]);
+        setSelectedCard(index < (cards.length - 1) ? cards[index + 1] : cards[0]);
     }, [selectedCard, cards]);
 
     return (
