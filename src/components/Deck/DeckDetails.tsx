@@ -22,7 +22,9 @@ export default function DeckDetails() {
     const learnedCards = deck?.cards?.filter((card) => card.displayedTimes > 0).length ?? 0;
     const percentage = cardsTotal > 0 ? (learnedCards * 100) / cardsTotal : 0;
 
-    const handleStartLearning = useCallback(() => navigate('../library/cards/' + deck?.id), [navigate, deck?.id]);
+    const handleStartLearning = useCallback(() => (
+        navigate('../library/cards/' + deck?.id, {state: {isDemo: true}})
+    ), [navigate, deck?.id]);
 
     useEffect(() => {
         if (isDemo) {

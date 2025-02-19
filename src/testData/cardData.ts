@@ -6,6 +6,7 @@ export const card1: CardModel = {
     title: 'Plants',
     description: 'Plants are essential for all life.',
     rate: 1,
+    probability: 0.1,
     displayedTimes: 0,
     created: new Date().toDateString(),
     updated: new Date().toDateString(),
@@ -18,6 +19,7 @@ export const card2: CardModel = {
     title: 'Animals',
     description: 'Animals are a part of nature.',
     rate: 1,
+    probability: 0.1,
     displayedTimes: 0,
     created: new Date().toDateString(),
     updated: new Date().toDateString(),
@@ -30,7 +32,8 @@ export const card3: CardModel = {
     title: 'Fungi',
     description: 'Humans depend on plants and animals for survival.',
     rate: 1,
-    displayedTimes: 1,
+    probability: 0.1,
+    displayedTimes: 0,
     created: new Date().toDateString(),
     updated: new Date().toDateString(),
     createdBy: user1.name,
@@ -48,6 +51,7 @@ export const card4: CardModel = {
         'growth and nutrient intake. Fungi grow from the tips of filaments (hyphae) that make up the bodies of the ' +
         'organisms (mycelia), and they digest organic matter externally before absorbing it into their mycelia.',
     rate: 1,
+    probability: 0.1,
     displayedTimes: 0,
     created: new Date().toDateString(),
     updated: new Date().toDateString(),
@@ -55,4 +59,86 @@ export const card4: CardModel = {
     updatedBy: user1.name
 };
 
-export const demoCards = [card1,card2,card3,card4];
+export const card5: CardModel = {
+    id: '5',
+    title: 'Animals 2',
+    description: 'Animals are a part of nature. 2',
+    rate: 1,
+    probability: 0.1,
+    displayedTimes: 0,
+    created: new Date().toDateString(),
+    updated: new Date().toDateString(),
+    createdBy: user1.name,
+    updatedBy: user1.name
+};
+
+export const card6: CardModel = {
+    id: '6',
+    title: 'Fungi',
+    description: 'Humans depend on plants and animals for survival.',
+    rate: 1,
+    probability: 0.1,
+    displayedTimes: 0,
+    created: new Date().toDateString(),
+    updated: new Date().toDateString(),
+    createdBy: user1.name,
+    updatedBy: user1.name
+};
+
+export const card7: CardModel = {
+    id: '7',
+    title: 'Fungi 2',
+    description: 'Fungi are eukaryotic organisms; i.e., their cells contain membrane-bound organelles and ' +
+        'clearly defined nuclei.',
+    rate: 1,
+    probability: 0.1,
+    displayedTimes: 0,
+    created: new Date().toDateString(),
+    updated: new Date().toDateString(),
+    createdBy: user1.name,
+    updatedBy: user1.name
+};
+
+export const card8: CardModel = {
+    id: '8',
+    title: 'Fungi 3',
+    description: 'Fungi are eukaryotic organisms; i.e., their cells contain membrane-bound organelles and ' +
+        'clearly defined nuclei.',
+    rate: 1,
+    probability: 0.1,
+    displayedTimes: 0,
+    created: new Date().toDateString(),
+    updated: new Date().toDateString(),
+    createdBy: user1.name,
+    updatedBy: user1.name
+};
+
+export const card9: CardModel = {
+    id: '9',
+    title: 'Fungi 4',
+    description: 'Fungi are eukaryotic organisms; i.e., their cells contain membrane-bound organelles and ' +
+        'clearly defined nuclei.',
+    rate: 1,
+    probability: 0.1,
+    displayedTimes: 0,
+    created: new Date().toDateString(),
+    updated: new Date().toDateString(),
+    createdBy: user1.name,
+    updatedBy: user1.name
+};
+
+export const card10: CardModel = {
+    id: '10',
+    title: 'Fungi 5',
+    description: 'Fungi are eukaryotic organisms; i.e., their cells contain membrane-bound organelles and ' +
+        'clearly defined nuclei.',
+    rate: 1,
+    probability: 0.1,
+    displayedTimes: 0,
+    created: new Date().toDateString(),
+    updated: new Date().toDateString(),
+    createdBy: user1.name,
+    updatedBy: user1.name
+};
+
+export const demoCards = [card1, card2, card3, card4, card5, card6, card7, card8, card9, card10];

@@ -5,21 +5,28 @@ import DoneIcon from '@mui/icons-material/Done';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import './cards.css';
 import {CardsService} from "../../services/CardsService.ts";
-import {useParams} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import {CardModel} from "../../types/models/CardModel.ts";
-import {card1, card2, card3, card4} from "../../testData/cardData.ts";
-
-
-// TODO: remove when db is connected
-const cards: CardModel[] = [card1, card2, card3, card4];
+import {useDemo} from "../../hooks/useDemo.ts";
+import {useSelector} from "react-redux";
+import {demoCardsSelector} from "../../slices/demoSlice.ts";
+import {WeightType} from "../../types/models/DeckModel.ts";
 
 export default function Cards() {
-    let {deckId} = useParams();
+    const location = useLocation();
+    const {deckId} = useParams();
+    const {getRandomCard, handleWeight} = useDemo();
+    const demoCardsList = useSelector(demoCardsSelector);
+
+    const isDemo = location.state.isDemo ?? false;
 
     const [dbCards, setDbCards] = useState<CardModel[]>([]);
+    const [selectedCard, setSelectedCard] = useState<CardModel | null>(getRandomCard() ?? null);
 
     useEffect(() => {
-        if (deckId) {
+        if (isDemo) {
+            setDbCards(demoCardsList);
+        } else if (deckId) {
             CardsService.getAllCadsByDeckId(deckId).then((data) => {
                 setDbCards(data);
             }).catch((error) => {
@@ -30,20 +37,20 @@ export default function Cards() {
 
     useEffect(() => {
         // TODO: remove later
-        console.log("CARDS", dbCards);
+        console.log("DB - CARDS", dbCards);
     }, [dbCards]);
 
-    const [selectedCard, setSelectedCard] = useState<CardModel | null>(cards.find(card => card.rate === 1) || null);
-
-    const handleRateCard = useCallback(() => {
+    const handleRateCard = useCallback((weightType: WeightType) => {
         //     TODO: update rate of card
-        if (!selectedCard) {
+        const randomCard = getRandomCard() ?? null;
+
+        if (!selectedCard || !randomCard) {
             return;
         }
-        const index = cards.findIndex(card => card.id === selectedCard?.id);
 
-        setSelectedCard(index < (cards.length - 1) ? cards[index + 1] : cards[0]);
-    }, [selectedCard, cards]);
+        handleWeight(weightType, selectedCard.id);
+        setSelectedCard(randomCard);
+    }, [selectedCard]);
 
     return (
         <Container maxWidth="lg">
@@ -73,15 +80,15 @@ export default function Cards() {
 
                 <Box className="actions">
                     <Button data-testid="again-button" size="large" variant="outlined" endIcon={<ReplayIcon/>}
-                            onClick={handleRateCard}>
+                            onClick={() => handleRateCard("Hard")}>
                         Again
                     </Button>
                     <Button data-testid="good-button" size="large" variant="outlined" endIcon={<DoneIcon/>}
-                            onClick={handleRateCard}>
+                            onClick={() => handleRateCard("Medium")}>
                         Good
                     </Button>
                     <Button data-testid="easy-button" size="large" variant="outlined" endIcon={<DoneAllIcon/>}
-                            onClick={handleRateCard}>
+                            onClick={() => handleRateCard("Easy")}>
                         Easy
                     </Button>
                 </Box>
