@@ -14,7 +14,7 @@ export const useDemo = () => {
     // const [cards, setCards] = useState<CardModel[]>(deckObj?.cards ?? []);
 
     // Calculating Probabilities
-    const cards = deckObj?.cards ?? [];
+    const cards = useMemo(() => deckObj?.cards ?? [], [deckObj?.cards]);
     const totalRate = useMemo(() => Object.values(cards)
         .reduce((sum, card) => sum + card.rate, 0), [deckObj.cards]);
 
