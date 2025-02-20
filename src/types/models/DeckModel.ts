@@ -7,3 +7,13 @@ export interface DeckModel extends Base {
     type: string;
     cards?: CardModel[];
 }
+
+export type WeightType = "Hard" | "Medium" | "Easy";
+
+export enum WeightValue {
+    HARD = 1.5,
+    MEDIUM = 1.2,
+    EASY = 0.8,
+    MAX = 5.0,
+    MIN = 0.2
+}

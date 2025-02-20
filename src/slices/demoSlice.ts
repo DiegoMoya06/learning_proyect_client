@@ -2,7 +2,6 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {DeckModel} from "../types/models/DeckModel.ts";
 import {deck1} from "../testData/deckData.ts";
 import {CardModel} from "../types/models/CardModel.ts";
-import {demoUser} from "../testData/userData.ts";
 import {RootState} from "../utils/store.ts";
 
 interface DemoInfoData {
@@ -25,23 +24,35 @@ const demoSlice = createSlice({
         updateCardRate(state, action: PayloadAction<CardModel>) {
             if (!state.deck.cards) return;
 
+            console.log("has cards", action.payload);
+            const {
+                id, rate, probability, displayedTimes,
+                updated, updatedBy
+            } = action.payload;
+
             return {
                 ...state,
-                cards: state.deck.cards.map(card =>
-                    card.id === action.payload.id ? {
-                        ...card,
-                        rate: action.payload.rate,
-                        displayedTimes: card.displayedTimes + 1,
-                        updated: new Date(),
-                        updatedBy: demoUser.name
-                    } : card
-                )
+                deck: {
+                    ...state.deck,
+                    cards: state.deck.cards.map(card123 => (
+                            card123.id === id ? {
+                                ...card123,
+                                rate,
+                                probability,
+                                displayedTimes,
+                                updated,
+                                updatedBy
+                            } : card123
+                        )
+                    )
+                }
             }
         },
     },
 });
 
 export const {setDemoMode, updateCardRate} = demoSlice.actions;
-export const isDemoSelector = (state:RootState): boolean => state.demoInfo.isShowingDemo;
-export const demoDeckSelector = (state:RootState): DeckModel => state.demoInfo.deck;
+export const isDemoSelector = (state: RootState): boolean => state.demoInfo.isShowingDemo;
+export const demoDeckSelector = (state: RootState): DeckModel => state.demoInfo.deck;
+export const demoCardsSelector = (state: RootState): CardModel[] => state.demoInfo.deck.cards ?? [];
 export default demoSlice.reducer;

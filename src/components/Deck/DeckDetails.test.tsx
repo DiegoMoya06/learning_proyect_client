@@ -65,8 +65,8 @@ describe('DeckDetails Component', () => {
         );
 
         expect(screen.getByText('Total number of cards: '+deck1.cards?.length)).toBeInTheDocument();
-        expect(screen.getByText('3 cards to learn')).toBeInTheDocument();
-        expect(screen.getByText('1 card to repeat')).toBeInTheDocument();
+        expect(screen.getByText('20 cards to learn')).toBeInTheDocument();
+        expect(screen.getByText('0 cards to repeat')).toBeInTheDocument();
     });
 
     it('navigates to the learning page when clicking "Start learning"', () => {
@@ -80,7 +80,7 @@ describe('DeckDetails Component', () => {
 
         fireEvent.click(screen.getByText('Start learning'));
         expect(navigateMock).toHaveBeenCalledTimes(1);
-        expect(navigateMock).toHaveBeenCalledWith('../library/cards/'+deck1.id);
+        expect(navigateMock).toHaveBeenCalledWith('../library/cards/'+deck1.id,{state: {isDemo: true}});
     });
 
     // TODO: fix, is giving an error at the build time because the reducer is expecting a demoInfo with a deck of the type
