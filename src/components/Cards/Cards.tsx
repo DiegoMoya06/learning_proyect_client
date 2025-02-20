@@ -11,6 +11,7 @@ import {useDemo} from "../../hooks/useDemo.ts";
 import {useSelector} from "react-redux";
 import {demoCardsSelector} from "../../slices/demoSlice.ts";
 import {WeightType} from "../../types/models/DeckModel.ts";
+import DraggableArea from "./DraggableArea.tsx";
 
 export default function Cards() {
     const location = useLocation();
@@ -50,6 +51,10 @@ export default function Cards() {
 
     return (
         <Container maxWidth="lg">
+            <Box>
+                <DraggableArea/>
+            </Box>
+            
             <Box className="main_content">
                 {selectedCard ? (
                     <Card className="card" key={selectedCard.id}>
