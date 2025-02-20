@@ -24,6 +24,7 @@ const demoSlice = createSlice({
         updateCardRate(state, action: PayloadAction<CardModel>) {
             if (!state.deck.cards) return;
 
+            console.log("has cards", action.payload);
             const {
                 id, rate, probability, displayedTimes,
                 updated, updatedBy
@@ -33,15 +34,16 @@ const demoSlice = createSlice({
                 ...state,
                 deck: {
                     ...state.deck,
-                    cards: state.deck.cards.map(card =>
-                        card.id === id ? {
-                            ...card,
-                            rate,
-                            probability,
-                            displayedTimes,
-                            updated,
-                            updatedBy
-                        } : card
+                    cards: state.deck.cards.map(card123 => (
+                            card123.id === id ? {
+                                ...card123,
+                                rate,
+                                probability,
+                                displayedTimes,
+                                updated,
+                                updatedBy
+                            } : card123
+                        )
                     )
                 }
             }

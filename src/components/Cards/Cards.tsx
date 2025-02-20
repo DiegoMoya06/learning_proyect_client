@@ -17,15 +17,18 @@ export default function Cards() {
     const {deckId} = useParams();
     const {getRandomCard, handleWeight} = useDemo();
     const demoCardsList = useSelector(demoCardsSelector);
-
     const isDemo = location.state.isDemo ?? false;
 
     const [dbCards, setDbCards] = useState<CardModel[]>([]);
-    const [selectedCard, setSelectedCard] = useState<CardModel | null>(getRandomCard() ?? null);
+    const [selectedCard, setSelectedCard] = useState<CardModel | null>();
 
     useEffect(() => {
         if (isDemo) {
             setDbCards(demoCardsList);
+
+            if (!selectedCard) {
+                setSelectedCard(getRandomCard(demoCardsList));
+            }
         } else if (deckId) {
             CardsService.getAllCadsByDeckId(deckId).then((data) => {
                 setDbCards(data);
@@ -33,24 +36,17 @@ export default function Cards() {
                 console.log("Error", error);
             });
         }
-    }, [deckId]);
-
-    useEffect(() => {
-        // TODO: remove later
-        console.log("DB - CARDS", dbCards);
-    }, [dbCards]);
+    }, [isDemo, deckId, demoCardsList, selectedCard]);
 
     const handleRateCard = useCallback((weightType: WeightType) => {
-        //     TODO: update rate of card
-        const randomCard = getRandomCard() ?? null;
+        if (!selectedCard) return;
 
-        if (!selectedCard || !randomCard) {
-            return;
-        }
-
-        handleWeight(weightType, selectedCard.id);
+        const totalRate = Object.values(dbCards)
+            .reduce((sum, cardElement) => sum + cardElement.rate, 0);
+        handleWeight(weightType, selectedCard, totalRate);
+        const randomCard = getRandomCard(dbCards, selectedCard?.id) ?? null;
         setSelectedCard(randomCard);
-    }, [selectedCard]);
+    }, [dbCards, selectedCard]);
 
     return (
         <Container maxWidth="lg">

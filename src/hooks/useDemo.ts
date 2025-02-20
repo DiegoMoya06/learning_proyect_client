@@ -15,71 +15,59 @@ export const useDemo = () => {
 
     // Calculating Probabilities
     const cards = useMemo(() => deckObj?.cards ?? [], [deckObj?.cards]);
-    const totalRate = useMemo(() => Object.values(cards)
+    const totalRateG = useMemo(() => Object.values(cards)
         .reduce((sum, card) => sum + card.rate, 0), [deckObj.cards]);
 
-    const calculateProbability = (toUpdate: CardModel) => {
-        const cardToUpdate = cards.find(card => card.id === toUpdate.id);
-
-        if (!cardToUpdate) return;
-
-        const updatedCard = {
-            ...cardToUpdate,
-            probability: cardToUpdate.rate / totalRate
-        };
-
-        dispatch(updateCardRate(updatedCard));
-    };
-
+    // TODO: check if still necessary
     const calculateProbabilities = () => {
         const updatedCards = cards.map(card => ({
             ...card,
-            probability: card.rate / totalRate
+            probability: card.rate / totalRateG
         }));
 
         updatedCards.forEach(card => dispatch(updateCardRate(card)));
     };
 
     // Weighted random selection function
-    const getRandomCard = () => {
+    const getRandomCard = (currentCardsList: CardModel[], currentCardId?: string) => {
         // Random number between 0 and 1
         const rand = Math.random();
-        console.log("RAND", rand);
         let cumulativeProbability = 0.0;
-        console.log("cumulativeProbability", cumulativeProbability);
-        cards.forEach(cardElement => {
-            cumulativeProbability += cardElement.probability;
-            console.log("cumulativeProbability += cardElement.probability", (cumulativeProbability));
 
-            if (rand < cumulativeProbability) {
+        // TODO: solve issue that the first cards are shown more because are the first to be compared with rand
+        for (const cardElement of currentCardsList) {
+            cumulativeProbability += cardElement.probability;
+
+            if (rand < cumulativeProbability && currentCardId !== cardElement.id) {
                 return cardElement;
             }
-        });
+        }
 
-        console.log("cards.at(0)", cards.at(0));
         // Fallback in case of rounding errors
-        return cards.at(0);
+        return currentCardsList.at(0);
     };
 
-    const handleWeight = (weightType: WeightType, cardId: string) => {
-        console.log("CARDS", cards)
-        // TODO: is not working to update, i think is getting always the first version of "cards" and not the updated one
-        const toUpdate = cards.find(card => card.id === cardId);
+    const handleWeight = (weightType: WeightType, cardElement: CardModel, totalRate: number) => {
+        if (!cardElement) return;
+        console.log("CARD ELEMENT TO RATE", cardElement);
 
-        if (!toUpdate) return;
-
+        const newRate = setNewRate(weightType, cardElement.rate);
+        const newTotalRate = totalRate - cardElement.rate + newRate;
+        const newProbability = newRate / newTotalRate;
+        const newDisplayedTimes = cardElement.displayedTimes + 1;
         const currentDate = new Date().toDateString();
 
         const updatedCard = {
-            ...toUpdate,
-            rate: setNewRate(weightType, toUpdate.rate),
-            displayedTimes: toUpdate.displayedTimes + 1,
+            ...cardElement,
+            rate: newRate,
+            probability: newProbability,
+            displayedTimes: newDisplayedTimes,
             updated: currentDate,
             updatedBy: demoUser.name,
         };
 
         dispatch(updateCardRate(updatedCard));
-    }
+    };
 
     const setNewRate = (weightType: WeightType, rate: number) => {
         switch (weightType) {
@@ -100,7 +88,6 @@ export const useDemo = () => {
 
     return {
         handleWeight,
-        calculateProbability,
         calculateProbabilities,
         getRandomCard
     }
