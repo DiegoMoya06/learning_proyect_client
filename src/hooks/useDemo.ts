@@ -18,7 +18,6 @@ export const useDemo = () => {
     const totalRateG = useMemo(() => Object.values(cards)
         .reduce((sum, card) => sum + card.rate, 0), [deckObj.cards]);
 
-    // TODO: check if still necessary
     const calculateProbabilities = () => {
         const updatedCards = cards.map(card => ({
             ...card,
