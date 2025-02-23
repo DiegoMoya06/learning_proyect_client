@@ -2,6 +2,7 @@ import {it, vi} from "vitest";
 import {fireEvent, render, screen} from "@testing-library/react";
 import Navbar from "./Navbar.tsx";
 import {useNavigate} from "react-router-dom";
+import {AuthProvider} from "../AuthContext/AuthProvider.tsx";
 
 // Mock useNavigate from react-router-dom
 vi.mock('react-router-dom', async () => {
@@ -17,7 +18,19 @@ describe('Navbar', () => {
 
     beforeEach(() => {
         vi.mocked(useNavigate).mockReturnValue(navigate);
-        render(<Navbar/>);
+        // Mock localStorage to simulate an authenticated user
+        localStorage.setItem('token', 'fake-token');
+
+        render(
+            <AuthProvider>
+                <Navbar/>
+            </AuthProvider>
+        );
+    });
+
+    afterEach(() => {
+        // Clean up localStorage
+        localStorage.removeItem('token');
     });
 
     it('Should show navbar options menu', async () => {

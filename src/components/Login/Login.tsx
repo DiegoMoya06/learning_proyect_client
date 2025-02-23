@@ -15,6 +15,8 @@ export default function Login() {
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
 
+        console.log("EMAAAAIL", email);
+        console.log("PASSWORD", password);
         // Simple validation
         setEmailError(!email.includes('@'));
         setPasswordError(password.length < 6);
@@ -52,8 +54,8 @@ export default function Login() {
                     <Typography variant="h4" component="h1" gutterBottom>
                         Login
                     </Typography>
-                    {/*<Box component="form" onSubmit={handleSubmit} sx={{mt: 1, width: '100%'}}>*/}
-                    <Box sx={{mt: 1, width: '100%'}}>
+                    <Box component="form" onSubmit={handleSubmit} sx={{mt: 1, width: '100%'}}>
+                        {/*<Box sx={{mt: 1, width: '100%'}}>*/}
                         <TextField
                             margin="normal"
                             required
@@ -83,11 +85,10 @@ export default function Login() {
                             helperText={passwordError ? 'Password must be at least 6 characters' : ''}
                         />
                         <Button
-                            type="button"
+                            type="submit"
                             fullWidth
                             variant="contained"
                             sx={{mt: 3, mb: 2}}
-                            onClick={handleSubmit}
                         >
                             Sign In
                         </Button>
