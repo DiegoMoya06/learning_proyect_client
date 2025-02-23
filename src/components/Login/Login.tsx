@@ -1,69 +1,100 @@
-import {Box, Button, Card, CardContent, CardHeader, Input, Typography} from "@mui/material";
+import {Box, Button, Container, Paper, TextField, Typography} from "@mui/material";
+import React, {useState} from "react";
+import {Lock as LockIcon} from '@mui/icons-material';
+import {useAuth} from "../AuthContext/AuthProvider.tsx";
+import {useNavigate} from "react-router-dom"; //
 
 export default function Login() {
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [emailError, setEmailError] = useState<boolean>(false);
+    const [passwordError, setPasswordError] = useState<boolean>(false);
+    const {login} = useAuth();
+    const navigate = useNavigate();
 
+    const handleSubmit = (event: React.FormEvent) => {
+        event.preventDefault();
+
+        console.log("EMAAAAIL", email);
+        console.log("PASSWORD", password);
+        // Simple validation
+        setEmailError(!email.includes('@'));
+        setPasswordError(password.length < 6);
+
+        if (email.includes('@') && password.length >= 6) {
+            // TODO: complete later
+            // const response = await fetch('/api/login', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify({ username, password }),
+            // });
+
+            // if (response.ok) {
+            if (1 === 1) {
+                // const { token } = await response.json();
+                login("token"); // Save token and update auth state
+                navigate('/'); // Redirect to a protected route
+                alert('Login successful!');
+            }
+        } else {
+            alert('Login failed');
+        }
+    }
     return (
-        <Box className="flex min-h-screen items-center justify-center bg-purple-50/30 p-4">
-            <Card className="w-full max-w-md">
-                <CardHeader>
-                    <Typography gutterBottom sx={{color: 'text.secondary', fontSize: 14}}>
-                        Sign In
+        <Container maxWidth="sm">
+            <Paper elevation={3} sx={{padding: 4, marginTop: 8}}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+                    <LockIcon sx={{fontSize: 40, color: 'primary.main', mb: 2}}/> {/* Optional: Lock icon */}
+                    <Typography variant="h4" component="h1" gutterBottom>
+                        Login
                     </Typography>
-                    {/*<CardTitle className="text-center text-2xl"></CardTitle>*/}
-                </CardHeader>
-                <CardContent>
-                    <form
-                        onSubmit={(_e) => {
-                            // e.preventDefault()
-                            // handleSubmit(formData)
-                        }}
-                        className="space-y-4"
-                    >
-                        <div className="space-y-2">
-                            <label htmlFor="email" className="text-sm font-medium">
-                                Email
-                            </label>
-                            <Input
-                                id="email"
-                                name="email"
-                                type="email"
-                                value={''}
-                                onChange={() => {}}
-                                required
-                                placeholder="Enter your email"
-                                className={/*'errors.email'*/ 1 ? 'border-red-500' : ''}
-                            />
-                            {/*'errors.email'*/ 1 && <p className="text-sm text-red-500">{'errors.email'}</p>}
-                        </div>
-                        <div className="space-y-2">
-                            <label htmlFor="password" className="text-sm font-medium">
-                                Password
-                            </label>
-                            <Input
-                                id="password"
-                                name="password"
-                                type="password"
-                                value={'formData.password'}
-                                onChange={() => {}}
-                                required
-                                placeholder="Enter your password"
-                                className={/*'errors.password'*/ 1 ? 'border-red-500' : ''}
-                            />
-                            {/*'errors.password'*/ 1 && <p className="text-sm text-red-500">{'errors.password'}</p>}
-                        </div>
-                        {/*'errors.submit'*/ 1 && <p className="text-center text-sm text-red-500">{'errors.submit'}</p>}
-                        <Button type="submit" className="w-full" disabled={/*'isSubmitting'*/ 1 === 1}>
-                            {/*'isSubmitting'*/ 1 ? 'Signing In...' : 'Sign In'}
+                    <Box component="form" onSubmit={handleSubmit} sx={{mt: 1, width: '100%'}}>
+                        {/*<Box sx={{mt: 1, width: '100%'}}>*/}
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="email"
+                            label="Email Address"
+                            name="email"
+                            autoComplete="email"
+                            autoFocus
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            error={emailError}
+                            helperText={emailError ? 'Please enter a valid email address' : ''}
+                        />
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            error={passwordError}
+                            helperText={passwordError ? 'Password must be at least 6 characters' : ''}
+                        />
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{mt: 3, mb: 2}}
+                        >
+                            Sign In
                         </Button>
-                        <Box className="text-center text-sm">
-                            Don't have an account?{' '}
-                            <a href="/signup" className="text-purple-600 hover:text-purple-500">
-                                Sign up
-                            </a>
-                        </Box>
-                    </form>
-                </CardContent>
-            </Card>
-        </Box>
+                    </Box>
+                </Box>
+            </Paper>
+        </Container>
     );
 }

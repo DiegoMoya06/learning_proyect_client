@@ -13,8 +13,9 @@ import {
 } from "@mui/material";
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import MenuIcon from '@mui/icons-material/Menu';
-import {useCallback, useState} from "react";
+import React, {useCallback, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {useAuth} from "../AuthContext/AuthProvider.tsx";
 
 const pages = ['Library', 'Edit',];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -24,6 +25,7 @@ export default function Navbar() {
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
     const navigate = useNavigate();
+    const {logout} = useAuth();
 
     const handleOpenNavMenu = useCallback((event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -39,6 +41,13 @@ export default function Navbar() {
     const handleCloseUserMenu = useCallback(() => {
         setAnchorElUser(null);
     }, []);
+
+    const handleSettingClick = (element: string) => {
+        if (element === "Logout") {
+            logout();
+        }
+        handleCloseUserMenu();
+    };
 
     const navigateTo = useCallback((url: string) => {
         navigate(url);
@@ -156,7 +165,7 @@ export default function Navbar() {
                             onClose={handleCloseUserMenu}
                         >
                             {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}
+                                <MenuItem key={setting} onClick={() => handleSettingClick(setting)}
                                           data-testid={`menu-item-${setting}`}>
                                     <Typography sx={{textAlign: 'center'}}>{setting}</Typography>
                                 </MenuItem>
