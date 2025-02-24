@@ -6,5 +6,14 @@ export interface CardModel extends Base {
     description: string;
     rate: number;
     probability: number;
-    displayedTimes: number;
+    timesDisplayed: number;
+    lastDisplayed: Date;
+}
+
+export interface CardStatsModel {
+    id: string,
+    title: string;
+    probability: number;
+    timesDisplayed: number;
+    lastDisplayed: Date;
 }

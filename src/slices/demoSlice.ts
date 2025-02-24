@@ -24,9 +24,8 @@ const demoSlice = createSlice({
         updateCardRate(state, action: PayloadAction<CardModel>) {
             if (!state.deck.cards) return;
 
-            console.log("has cards", action.payload);
             const {
-                id, rate, probability, displayedTimes,
+                id, rate, probability, timesDisplayed, lastDisplayed,
                 updated, updatedBy
             } = action.payload;
 
@@ -39,7 +38,8 @@ const demoSlice = createSlice({
                                 ...card123,
                                 rate,
                                 probability,
-                                displayedTimes,
+                                timesDisplayed: timesDisplayed,
+                                lastDisplayed,
                                 updated,
                                 updatedBy
                             } : card123
