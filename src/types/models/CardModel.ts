@@ -7,7 +7,7 @@ export interface CardModel extends Base {
     rate: number;
     probability: number;
     timesDisplayed: number;
-    lastDisplayed: Date;
+    lastDisplayed: Date | string;
 }
 
 export interface CardStatsModel {

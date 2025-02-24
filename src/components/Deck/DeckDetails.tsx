@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useMemo, useState} from "react";
 import {useSelector} from "react-redux";
 import {demoDeckSelector} from "../../slices/demoSlice.ts";
 import {DeckModel} from "../../types/models/DeckModel.ts";
@@ -9,6 +9,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import {useLocation, useNavigate} from "react-router-dom";
 import './deckDetails.css';
 import DeckStats from "./DeckStats.tsx";
+import BreadcrumbOpts from "../Breadcrumbs/BreadcrumbOpts.tsx";
 
 export default function DeckDetails() {
     const navigate = useNavigate();
@@ -18,10 +19,12 @@ export default function DeckDetails() {
 
     const [deck, setDeck] = useState<DeckModel>();
 
-    const isDemo = location.state.isDemo ?? false;
+    const isDemo = useMemo(() => location.state?.isDemo ?? false, [location.state]);
     const cardsTotal = deck?.cards?.length ?? 0;
     const learnedCards = deck?.cards?.filter((card) => card.timesDisplayed > 0).length ?? 0;
     const percentage = cardsTotal > 0 ? (learnedCards * 100) / cardsTotal : 0;
+
+    const breadcrumbs = [{name: 'Dashboard', url: '/'}, {name: 'Deck Details', url: ''}];
 
     const handleStartLearning = useCallback(() => (
         navigate('../library/cards/' + deck?.id, {state: {isDemo: true}})
@@ -37,6 +40,7 @@ export default function DeckDetails() {
 
     return (
         <Container maxWidth="lg">
+            <BreadcrumbOpts elements={breadcrumbs}/>
             <Box sx={{
                 display: 'flex',
                 flexDirection: 'column',

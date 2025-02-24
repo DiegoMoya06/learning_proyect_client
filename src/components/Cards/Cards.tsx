@@ -12,16 +12,23 @@ import {useSelector} from "react-redux";
 import {demoCardsSelector} from "../../slices/demoSlice.ts";
 import {WeightType} from "../../types/models/DeckModel.ts";
 import CardToDisplay from "./CardToDisplay.tsx";
+import BreadcrumbOpts from "../Breadcrumbs/BreadcrumbOpts.tsx";
 
 export default function Cards() {
     const location = useLocation();
     const {deckId} = useParams();
     const {getRandomCard, handleWeight} = useDemo();
     const demoCardsList = useSelector(demoCardsSelector);
-    const isDemo = location.state.isDemo ?? false;
+    const isDemo = location.state?.isDemo ?? false;
 
     const [dbCards, setDbCards] = useState<CardModel[]>([]);
     const [selectedCard, setSelectedCard] = useState<CardModel | null>(null);
+
+    const breadcrumbs = [
+        {name: 'Dashboard', url: '/'},
+        {name: 'Deck Details', url: '/deckDetails'},
+        {name: 'Cards View', url: ''}
+    ];
 
     useEffect(() => {
         if (isDemo) {
@@ -51,8 +58,9 @@ export default function Cards() {
 
     return (
         <Container maxWidth="lg">
-            <Box className="main_content">
+            <BreadcrumbOpts elements={breadcrumbs}/>
 
+            <Box className="main_content">
                 <CardToDisplay cardData={selectedCard}/>
 
                 <Box className="actions">

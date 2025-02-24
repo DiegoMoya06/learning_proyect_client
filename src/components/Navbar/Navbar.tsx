@@ -25,7 +25,7 @@ export default function Navbar() {
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
     const navigate = useNavigate();
-    const {logout} = useAuth();
+    const {isAuthenticated, logout} = useAuth();
 
     const handleOpenNavMenu = useCallback((event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -143,11 +143,13 @@ export default function Navbar() {
                         ))}
                     </Box>
                     <Box sx={{flexGrow: 0}}>
-                        <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{p: 0}} data-testid="avatar-icon-button">
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg"/>
-                            </IconButton>
-                        </Tooltip>
+                        {isAuthenticated && (
+                            <Tooltip title="Open settings">
+                                <IconButton onClick={handleOpenUserMenu} sx={{p: 0}} data-testid="avatar-icon-button">
+                                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg"/>
+                                </IconButton>
+                            </Tooltip>
+                        )}
                         <Menu
                             sx={{mt: '45px'}}
                             id="menu-appbar"

@@ -14,10 +14,10 @@ vi.mock('react-router-dom', async () => {
 });
 
 describe('Navbar', () => {
-    const navigate = vi.fn();
+    const mockNavigate = vi.fn();
 
     beforeEach(() => {
-        vi.mocked(useNavigate).mockReturnValue(navigate);
+        vi.mocked(useNavigate).mockReturnValue(mockNavigate);
         // Mock localStorage to simulate an authenticated user
         localStorage.setItem('token', 'fake-token');
 
@@ -55,14 +55,14 @@ describe('Navbar', () => {
 
         expect(libraries).toHaveLength(2);
         fireEvent.click(libraries[0]);
-        expect(navigate).toHaveBeenCalledTimes(1);
-        expect(navigate).toHaveBeenLastCalledWith("/library");
+        expect(mockNavigate).toHaveBeenCalledTimes(1);
+        expect(mockNavigate).toHaveBeenLastCalledWith("/library");
 
         const logo = await screen.findAllByText(/\blc\b/i);
 
         expect(logo).toHaveLength(2);
         fireEvent.click(logo[0]);
-        expect(navigate).toHaveBeenCalledTimes(2);
-        expect(navigate).toHaveBeenLastCalledWith("/");
+        expect(mockNavigate).toHaveBeenCalledTimes(2);
+        expect(mockNavigate).toHaveBeenLastCalledWith("/");
     });
 });
