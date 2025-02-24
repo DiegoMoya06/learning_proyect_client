@@ -11,8 +11,6 @@ export const useDemo = () => {
     const deckObj = useSelector(demoDeckSelector);
     const {HARD, MEDIUM, EASY, MAX, MIN} = WeightValue;
 
-    // const [cards, setCards] = useState<CardModel[]>(deckObj?.cards ?? []);
-
     // Calculating Probabilities
     const cards = useMemo(() => deckObj?.cards ?? [], [deckObj?.cards]);
     const totalRateG = useMemo(() => Object.values(cards)
@@ -48,19 +46,20 @@ export const useDemo = () => {
 
     const handleWeight = (weightType: WeightType, cardElement: CardModel, totalRate: number) => {
         if (!cardElement) return;
-        console.log("CARD ELEMENT TO RATE", cardElement);
 
         const newRate = setNewRate(weightType, cardElement.rate);
         const newTotalRate = totalRate - cardElement.rate + newRate;
         const newProbability = newRate / newTotalRate;
-        const newDisplayedTimes = cardElement.displayedTimes + 1;
+        const newTimesDisplayed = cardElement.timesDisplayed + 1;
+        const newLastDisplayed = new Date();
         const currentDate = new Date().toDateString();
 
         const updatedCard = {
             ...cardElement,
             rate: newRate,
             probability: newProbability,
-            displayedTimes: newDisplayedTimes,
+            timesDisplayed: newTimesDisplayed,
+            lastDisplayed: newLastDisplayed,
             updated: currentDate,
             updatedBy: demoUser.name,
         };

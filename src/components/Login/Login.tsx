@@ -15,8 +15,6 @@ export default function Login() {
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
 
-        console.log("EMAAAAIL", email);
-        console.log("PASSWORD", password);
         // Simple validation
         setEmailError(!email.includes('@'));
         setPasswordError(password.length < 6);
