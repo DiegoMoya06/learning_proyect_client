@@ -1,4 +1,4 @@
-import {Box, Button, Card, CardContent, Container, Divider, Typography} from "@mui/material";
+import {Box, Button, Container} from "@mui/material";
 import {useCallback, useEffect, useState} from "react";
 import ReplayIcon from '@mui/icons-material/Replay';
 import DoneIcon from '@mui/icons-material/Done';
@@ -11,6 +11,7 @@ import {useDemo} from "../../hooks/useDemo.ts";
 import {useSelector} from "react-redux";
 import {demoCardsSelector} from "../../slices/demoSlice.ts";
 import {WeightType} from "../../types/models/DeckModel.ts";
+import CardToDisplay from "./CardToDisplay.tsx";
 
 export default function Cards() {
     const location = useLocation();
@@ -20,14 +21,14 @@ export default function Cards() {
     const isDemo = location.state.isDemo ?? false;
 
     const [dbCards, setDbCards] = useState<CardModel[]>([]);
-    const [selectedCard, setSelectedCard] = useState<CardModel | null>();
+    const [selectedCard, setSelectedCard] = useState<CardModel | null>(null);
 
     useEffect(() => {
         if (isDemo) {
             setDbCards(demoCardsList);
 
             if (!selectedCard) {
-                setSelectedCard(getRandomCard(demoCardsList));
+                setSelectedCard(getRandomCard(demoCardsList) ?? null);
             }
         } else if (deckId) {
             CardsService.getAllCadsByDeckId(deckId).then((data) => {
@@ -51,28 +52,8 @@ export default function Cards() {
     return (
         <Container maxWidth="lg">
             <Box className="main_content">
-                {selectedCard ? (
-                    <Card className="card" key={selectedCard.id}>
-                        <CardContent className="card_content">
-                            <Box className="card_title">
-                                <Typography gutterBottom variant="h6">
-                                    {selectedCard.title}
-                                </Typography>
-                                <Divider/>
-                            </Box>
 
-                            <Box className="card_description">
-                                <Typography className="description_text" gutterBottom>
-                                    {selectedCard.description}
-                                </Typography>
-                            </Box>
-                        </CardContent>
-                    </Card>
-                ) : (
-                    <Typography gutterBottom variant="h6">
-                        No cards available
-                    </Typography>
-                )}
+                <CardToDisplay cardData={selectedCard}/>
 
                 <Box className="actions">
                     <Button data-testid="again-button" size="large" variant="outlined" endIcon={<ReplayIcon/>}
