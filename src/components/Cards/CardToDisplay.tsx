@@ -5,8 +5,8 @@ import React, {Fragment} from "react";
 interface CardToDisplay {
     cardData: CardModel | null;
     isEditing: boolean;
-    updateCardTitle: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    updateCardDescription: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    updateCardTitle?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    updateCardDescription?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function CardToDisplay(props: Readonly<CardToDisplay>) {

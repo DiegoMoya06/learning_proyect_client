@@ -86,12 +86,13 @@ export default function CardModal(props: Readonly<CardModalProps>) {
             </DialogContent>
             <Divider/>
             <DialogActions>
+                <Button onClick={handleCloseModal}>Close</Button>
+                
                 {isEditing ? (
                     <Button onClick={saveChanges} disabled={isDataInvalid}>Save changes</Button>
                 ) : (
                     <Button onClick={activateEditMode}>Edit</Button>
                 )}
-                <Button onClick={handleCloseModal}>Close</Button>
             </DialogActions>
         </Dialog>
     );
