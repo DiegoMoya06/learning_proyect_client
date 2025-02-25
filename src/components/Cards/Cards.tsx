@@ -61,7 +61,7 @@ export default function Cards() {
             <BreadcrumbOpts elements={breadcrumbs}/>
 
             <Box className="main_content">
-                <CardToDisplay cardData={selectedCard}/>
+                <CardToDisplay cardData={selectedCard} isEditing={false} />
 
                 <Box className="actions">
                     <Button data-testid="again-button" size="large" variant="outlined" endIcon={<ReplayIcon/>}

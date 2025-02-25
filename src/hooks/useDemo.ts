@@ -51,7 +51,7 @@ export const useDemo = () => {
         const newTotalRate = totalRate - cardElement.rate + newRate;
         const newProbability = newRate / newTotalRate;
         const newTimesDisplayed = cardElement.timesDisplayed + 1;
-        const newLastDisplayed = new Date();
+        const newLastDisplayed = new Date().toDateString();
         const currentDate = new Date().toDateString();
 
         const updatedCard = {
