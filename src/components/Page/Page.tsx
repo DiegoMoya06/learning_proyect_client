@@ -1,6 +1,7 @@
 import {PropsWithChildren} from "react";
 import {CssBaseline} from "@mui/material";
 import Navbar from "../Navbar";
+import Notification from "./Notification.tsx";
 
 
 export default function Page(props: PropsWithChildren) {
@@ -8,7 +9,7 @@ export default function Page(props: PropsWithChildren) {
         <>
             <CssBaseline/>
             <Navbar/>
-            {/*TODO: add Notification here*/}
+            <Notification/>
             {props.children}
         </>
     )
