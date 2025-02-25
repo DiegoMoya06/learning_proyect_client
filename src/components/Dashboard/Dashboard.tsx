@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {useCallback} from "react";
 import {useAppDispatch} from "../../utils/store.ts";
 import {setDemoMode} from "../../slices/demoSlice.ts";
+import BreadcrumbOpts from "../Breadcrumbs/BreadcrumbOpts.tsx";
 
 const optionDetails = [
     {
@@ -23,6 +24,10 @@ export default function Dashboard() {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
+    const breadcrumbs = [
+        {name: 'Dashboard', url: ''}
+    ];
+
     const handleNavigate = useCallback((url: string) => {
         if (url === "deckDetails") {
             dispatch(setDemoMode(true));
@@ -33,6 +38,8 @@ export default function Dashboard() {
 
     return (
         <Container maxWidth="lg">
+            <BreadcrumbOpts elements={breadcrumbs}/>
+
             <Typography sx={{mt: 4, mb: 6}} variant="h6" component="div">
                 Choose one of the following options
             </Typography>

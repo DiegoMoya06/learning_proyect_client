@@ -1,14 +1,17 @@
-import {Box, Container, Divider, List, ListItem, ListItemButton, ListItemText, Typography} from "@mui/material";
+import {Box, Container, Divider, List, ListItem, ListItemButton, ListItemText} from "@mui/material";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import {useCallback, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {DecksService} from "../../services/DecksService.ts";
 import {DeckModel} from "../../types/models/DeckModel.ts";
+import BreadcrumbOpts from "../Breadcrumbs/BreadcrumbOpts.tsx";
 
 export default function Library() {
     const navigate = useNavigate();
 
     const [decks, setDecks] = useState<DeckModel[]>([]);
+
+    const breadcrumbs = [{name: 'Dashboard', url: '/'}, {name: 'Library', url: ''}];
 
     useEffect(() => {
         DecksService.getAllDecks().then((data) => {
@@ -24,9 +27,7 @@ export default function Library() {
 
     return (
         <Container maxWidth="lg">
-            <Typography sx={{mt: 4, mb: 2}} variant="h6" component="div">
-                Library
-            </Typography>
+            <BreadcrumbOpts elements={breadcrumbs}/>
 
             <Container maxWidth="sm">
                 <List>
