@@ -18,38 +18,32 @@ describe('BreadcrumbOpts', () => {
         {name: 'Deck Details', url: '/deckDetails'},
         {name: 'Card Details', url: '/cardDetails'},
     ];
+    const mockNavigate = vi.fn();
 
-    it('renders the correct number of breadcrumbs', () => {
+    beforeEach(() => {
+        vi.mocked(useNavigate).mockReturnValue(mockNavigate);
         render(
             <MemoryRouter>
                 <BreadcrumbOpts elements={mockElements}/>
             </MemoryRouter>
         );
+    });
 
+    afterEach(() => {
+        vi.clearAllMocks();
+    });
+
+    it('renders the correct number of breadcrumbs', () => {
         expect(screen.getAllByRole('button')).toHaveLength(2); // Two buttons
         expect(screen.getByText('Card Details')).toBeInTheDocument(); // One typography
     });
 
     it('renders the last breadcrumb as non-clickable text', () => {
-        render(
-            <MemoryRouter>
-                <BreadcrumbOpts elements={mockElements}/>
-            </MemoryRouter>
-        );
-
         const lastBreadcrumb = screen.getByText('Card Details');
         expect(lastBreadcrumb.tagName).toBe('P'); // Typography renders as <p>
     });
 
     it('navigates to the correct URL when a breadcrumb is clicked', () => {
-        const mockNavigate = vi.fn();
-        vi.mocked(useNavigate).mockReturnValue(mockNavigate);
-
-        render(
-            <MemoryRouter>
-                <BreadcrumbOpts elements={mockElements}/>
-            </MemoryRouter>
-        );
 
         // Click the "Home" breadcrumb
         const homeBreadcrumb = screen.getByText('Home');
@@ -60,14 +54,6 @@ describe('BreadcrumbOpts', () => {
     });
 
     it('navigates with state when the URL is /deckDetails', () => {
-        const mockNavigate = vi.fn();
-        vi.mocked(useNavigate).mockReturnValue(mockNavigate);
-
-        render(
-            <MemoryRouter>
-                <BreadcrumbOpts elements={mockElements}/>
-            </MemoryRouter>
-        );
 
         // Click the "Deck Details" breadcrumb
         const deckDetailsBreadcrumb = screen.getByText('Deck Details');

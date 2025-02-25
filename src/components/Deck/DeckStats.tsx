@@ -9,7 +9,7 @@ interface DeckStatsProps {
     deckCards: CardModel[];
 }
 
-export default function DeckStats(props: Readonly<DeckStatsProps>) {
+export default function DeckStats(props: DeckStatsProps) {
     const {deckCards} = props;
 
     const [openCardModal, setOpenCardModal] = useState(false);

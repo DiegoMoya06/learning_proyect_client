@@ -15,5 +15,5 @@ export interface CardStatsModel {
     title: string;
     probability: number;
     timesDisplayed: number;
-    lastDisplayed: Date;
+    lastDisplayed: Date  | string;
 }
