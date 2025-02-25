@@ -20,9 +20,10 @@ describe('DeckStats', () => {
             probability: 0.5,
         },
     ];
+    const isDemo = true;
 
     it('renders the DataGrid with correct rows and columns', () => {
-        render(<DeckStats deckCards={mockCards as CardModel[]}/>);
+        render(<DeckStats deckCards={mockCards as CardModel[]} isDemo={isDemo}/>);
 
         // Check if the columns are rendered
         expect(screen.getByText('Title')).toBeInTheDocument();
@@ -36,7 +37,7 @@ describe('DeckStats', () => {
     });
 
     it('hides the ID column', () => {
-        render(<DeckStats deckCards={mockCards as CardModel[]}/>);
+        render(<DeckStats deckCards={mockCards as CardModel[]} isDemo={isDemo}/>);
 
         // Check if the ID column is hidden
         expect(screen.queryByText('ID')).not.toBeInTheDocument();
@@ -48,7 +49,7 @@ describe('DeckStats', () => {
     // });
 
     it('formats the probability column correctly', () => {
-        render(<DeckStats deckCards={mockCards as CardModel[]}/>);
+        render(<DeckStats deckCards={mockCards as CardModel[]} isDemo={isDemo}/>);
 
         // Check if the probability is formatted as a percentage
         expect(screen.getByText('0.25%')).toBeInTheDocument();
@@ -56,7 +57,7 @@ describe('DeckStats', () => {
     });
 
     it('formats the lastDisplayed column correctly', () => {
-        render(<DeckStats deckCards={mockCards as CardModel[]}/>);
+        render(<DeckStats deckCards={mockCards as CardModel[]} isDemo={isDemo}/>);
 
         // Check if the lastDisplayed date is formatted correctly
         expect(screen.getByText('Sun Oct 01 2023')).toBeInTheDocument();

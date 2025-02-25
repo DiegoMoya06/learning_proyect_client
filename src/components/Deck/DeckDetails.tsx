@@ -88,7 +88,7 @@ export default function DeckDetails() {
                     </CardActions>
                 </Card>
 
-                <DeckStats deckCards={deck?.cards || []}/>
+                <DeckStats deckCards={deck?.cards || []} isDemo={isDemo}/>
             </Box>
         </Container>
     );

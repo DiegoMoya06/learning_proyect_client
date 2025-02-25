@@ -48,10 +48,38 @@ const demoSlice = createSlice({
                 }
             }
         },
+        updateCardTitleAndDescription(state, action: PayloadAction<CardModel>) {
+            if (!state.deck.cards) return;
+
+            const currentDate = new Date().toDateString();
+            const {
+                id, title, description, updatedBy
+            } = action.payload;
+
+            return {
+                ...state,
+                deck: {
+                    ...state.deck,
+                    cards: state.deck.cards.map(card123 => (
+                            card123.id === id ? {
+                                ...card123,
+                                title,
+                                description,
+                                updated: currentDate,
+                                updatedBy
+                            } : card123
+                        )
+                    )
+                }
+            }
+        },
     },
 });
 
-export const {setDemoMode, updateCardRate} = demoSlice.actions;
+export const {
+    setDemoMode, updateCardRate,
+    updateCardTitleAndDescription
+} = demoSlice.actions;
 export const isDemoSelector = (state: RootState): boolean => state.demoInfo.isShowingDemo;
 export const demoDeckSelector = (state: RootState): DeckModel => state.demoInfo.deck;
 export const demoCardsSelector = (state: RootState): CardModel[] => state.demoInfo.deck.cards ?? [];

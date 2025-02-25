@@ -2,15 +2,16 @@ import {CardModel, CardStatsModel} from "../../types/models/CardModel.ts";
 import {Box} from "@mui/material";
 import {DataGrid, GridColDef} from "@mui/x-data-grid";
 import {GridRowSelectionModel} from "@mui/x-data-grid/models/gridRowSelectionModel";
-import {useState} from "react";
+import {useCallback, useState} from "react";
 import CardModal from "../Cards/CardModal.tsx";
 
 interface DeckStatsProps {
     deckCards: CardModel[];
+    isDemo: boolean;
 }
 
 export default function DeckStats(props: DeckStatsProps) {
-    const {deckCards} = props;
+    const {deckCards, isDemo} = props;
 
     const [openCardModal, setOpenCardModal] = useState(false);
     const [selectedCard, setSelectedCard] = useState<CardModel | null>(null);
@@ -47,11 +48,12 @@ export default function DeckStats(props: DeckStatsProps) {
         },
     ];
 
-    const handleSelectedRow = (selectedRowId: GridRowSelectionModel) => {
+    const handleSelectedRow = useCallback((selectedRowId: GridRowSelectionModel) => {
         const filtered = deckCards.find(card => card.id === selectedRowId[0]);
+
         setSelectedCard(filtered ?? null);
         setOpenCardModal(true);
-    };
+    }, [deckCards]);
 
     const handleClose = () => {
         setOpenCardModal(false);
@@ -78,7 +80,11 @@ export default function DeckStats(props: DeckStatsProps) {
                 density="standard"
                 onRowSelectionModelChange={handleSelectedRow}
             />
-            <CardModal isOpen={openCardModal} selectedCard={selectedCard} handleClose={handleClose}/>
+
+            {selectedCard && (
+                <CardModal isOpen={openCardModal} isDemo={isDemo} selectedCard={selectedCard}
+                           handleClose={handleClose}/>
+            )}
         </Box>
     );
 }
