@@ -1,7 +1,13 @@
 import {fireEvent, render, screen} from "@testing-library/react";
 import {AuthProvider} from "./AuthProvider.tsx";
 import TestComponent from "./TestComponent.tsx";
+import {vi} from "vitest";
 
+const useDispatchMock = vi.fn();
+
+vi.mock('react-redux', () => ({
+    useDispatch: () => useDispatchMock,
+}));
 
 describe('AuthProvider', () => {
     it('provides authentication state and functions', async () => {

@@ -13,6 +13,12 @@ vi.mock('react-router-dom', async () => {
     };
 });
 
+const useDispatchMock = vi.fn();
+
+vi.mock('react-redux', () => ({
+    useDispatch: () => useDispatchMock,
+}));
+
 describe('Navbar', () => {
     const mockNavigate = vi.fn();
 

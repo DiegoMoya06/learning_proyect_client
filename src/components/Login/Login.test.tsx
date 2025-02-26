@@ -20,6 +20,12 @@ vi.mock('../AuthContext/AuthProvider.tsx', async () => {
 
 const mockLogin = vi.fn();
 
+const useDispatchMock = vi.fn();
+
+vi.mock('react-redux', () => ({
+    useDispatch: () => useDispatchMock,
+}));
+
 describe('Login', () => {
     it('calls the login function when the form is submitted', async () => {
 
@@ -31,7 +37,6 @@ describe('Login', () => {
             </AuthProvider>
         );
 
-        // Fill in the form
         fireEvent.change(screen.getByLabelText(/Email Address/i), {
             target: {value: 'testuser@email.com'},
         });
@@ -39,13 +44,11 @@ describe('Login', () => {
             target: {value: 'password123'},
         });
 
-        // Submit the form
         fireEvent.click(screen.getByText('Sign In'));
 
         // Debugging: Check if mockLogin was called
         console.log('mockLogin calls:', mockLogin.mock.calls);
 
-        // Ensure the login function was called
-        expect(mockLogin).toHaveBeenCalledWith("token"); // Adjust based on your implementation
+        expect(mockLogin).toHaveBeenCalledWith("token");
     });
 });

@@ -2,7 +2,9 @@ import {Box, Button, Container, Paper, TextField, Typography} from "@mui/materia
 import React, {useState} from "react";
 import {Lock as LockIcon} from '@mui/icons-material';
 import {useAuth} from "../AuthContext/AuthProvider.tsx";
-import {useNavigate} from "react-router-dom"; //
+import {useNavigate} from "react-router-dom";
+import {useAppDispatch} from "../../utils/store.ts";
+import {Notifications} from "../../slices/notificationSlice.ts"; //
 
 export default function Login() {
     const [email, setEmail] = useState<string>('');
@@ -11,6 +13,7 @@ export default function Login() {
     const [passwordError, setPasswordError] = useState<boolean>(false);
     const {login} = useAuth();
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
@@ -32,10 +35,10 @@ export default function Login() {
                 // const { token } = await response.json();
                 login("token"); // Save token and update auth state
                 navigate('/'); // Redirect to a protected route
-                alert('Login successful!');
+
             }
         } else {
-            alert('Login failed');
+            dispatch(Notifications.notifyError('Login failed!', 2000));
         }
     }
     return (
