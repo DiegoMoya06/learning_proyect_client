@@ -1,5 +1,5 @@
 import {render, screen} from '@testing-library/react';
-import {describe, expect, it} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 import {MemoryRouter, Route, Routes} from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 import {AuthProvider} from "./AuthProvider.tsx";
@@ -8,6 +8,12 @@ import {Box} from "@mui/material";
 // Mock components for testing
 const Login = () => <Box>Login Page</Box>;
 const Library = () => <Box>Library Page</Box>;
+
+const useDispatchMock = vi.fn();
+
+vi.mock('react-redux', () => ({
+    useDispatch: () => useDispatchMock,
+}));
 
 describe('ProtectedRoute', () => {
     it('redirects unauthenticated users to the login page', () => {
