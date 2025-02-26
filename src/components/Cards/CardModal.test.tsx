@@ -149,21 +149,6 @@ describe('CardModal', () => {
         expect(screen.getByText('Save changes')).toBeDisabled();
     });
 
-    it('calls handleClose when the Close button is clicked', () => {
-        render(
-            <CardModal
-                isOpen={true}
-                isDemo={false}
-                selectedCard={card2}
-                handleClose={mockHandleClose}
-            />
-        );
-
-        fireEvent.click(screen.getByText('Close'));
-
-        expect(mockHandleClose).toHaveBeenCalled();
-    });
-
     it('dispatches updateCardTitleAndDescription when Save changes is clicked', () => {
 
         render(

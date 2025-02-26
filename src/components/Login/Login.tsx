@@ -35,7 +35,7 @@ export default function Login() {
                 // const { token } = await response.json();
                 login("token"); // Save token and update auth state
                 navigate('/'); // Redirect to a protected route
-                dispatch(Notifications.notifySuccess('Login successful!', 2000));
+
             }
         } else {
             dispatch(Notifications.notifyError('Login failed!', 2000));

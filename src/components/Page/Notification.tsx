@@ -2,10 +2,13 @@ import {useSelector} from "react-redux";
 import {hideNotification, notificationSelector} from "../../slices/notificationSlice.ts";
 import {useAppDispatch} from "../../utils/store.ts";
 import {Alert, Box, LinearProgress, Snackbar, SnackbarCloseReason} from "@mui/material";
+import React from "react";
 
 
 export default function Notification() {
-    const {open, autoClose, message, severity, progressBar} = useSelector(notificationSelector);
+    const {
+        open, autoClose, message, severity, progressBar
+    } = useSelector(notificationSelector);
     const dispatch = useAppDispatch();
     const onClose = () => dispatch(hideNotification());
     const handleClose = (_event: React.SyntheticEvent | Event, reason: SnackbarCloseReason | undefined) => {

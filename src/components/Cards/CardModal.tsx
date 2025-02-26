@@ -7,6 +7,7 @@ import {useAppDispatch} from "../../utils/store.ts";
 import {updateCardTitleAndDescription} from "../../slices/demoSlice.ts";
 import {isEmpty} from "../../utils/utils.tsx";
 import {demoUser} from "../../testData/userData.ts";
+import {Notifications} from "../../slices/notificationSlice.ts";
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {
@@ -55,6 +56,7 @@ export default function CardModal(props: Readonly<CardModalProps>) {
     const saveChanges = () => {
         setIsEditing(false);
         dispatch(updateCardTitleAndDescription(cardToUpdate));
+        dispatch(Notifications.notifySuccess('Successful update!', 2000));
         handleClose();
     }
 

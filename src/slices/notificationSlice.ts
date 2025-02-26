@@ -15,7 +15,7 @@ export interface NotificationData {
     readonly progressBar?: boolean;
 }
 
-interface StateNotification extends NotificationData {
+export interface StateNotification extends NotificationData {
     readonly open: boolean;
 }
 
@@ -25,7 +25,8 @@ const notificationInitialState: StateNotification = {
     autoClose: DEFAULT_AUTO_CLOSE,
     message: '',
     open: false,
-    severity: NotificationSeverity.Info
+    severity: NotificationSeverity.Info,
+    progressBar: false
 }
 
 const notificationSlice = createSlice({
@@ -56,8 +57,7 @@ const notificationSlice = createSlice({
     }
 });
 
-const {actions, reducer} = notificationSlice;
-export {reducer as NotificationReducer};
+const {actions} = notificationSlice;
 
 export const notificationSelector = (state: RootState): StateNotification => state.notification;
 
@@ -93,4 +93,7 @@ export const Notifications = {
     }
 };
 
-export const {showNotification, hideNotification} = notificationSlice.actions;
+export const {
+    showNotification, hideNotification
+} = notificationSlice.actions;
+export default notificationSlice.reducer;
