@@ -1,5 +1,5 @@
 import axios from "axios";
-import {baseUrl} from "../utils/utils.tsx";
+import {baseUrl, handleApiError} from "../utils/utils.tsx";
 
 const cgURL = "cg_controller";
 const dsURL = "ds_controller";
@@ -16,11 +16,17 @@ export const AIService = {
 
     async createDeckFromDS(file: File) {
         const formData = new FormData();
+        console.log("DECK FROM DS", dsURL);
         formData.append('file', file); // Append the file
-        const response = await axios
-            .post(`${baseUrl}${dsURL}/send-input-from-file`, formData);
-        console.log("response", response.data);
 
-        return response.data;
+        try {
+            const response = await axios
+                .post(`${baseUrl}${dsURL}/send-input-from-file`, formData);
+            console.log("response", response);
+
+            return response.data;
+        } catch (error) {
+            return handleApiError(error);
+        }
     }
 }
