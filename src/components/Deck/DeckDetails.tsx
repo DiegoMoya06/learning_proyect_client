@@ -10,6 +10,9 @@ import {useLocation, useNavigate} from "react-router-dom";
 import './deckDetails.css';
 import DeckStats from "./DeckStats.tsx";
 import BreadcrumbOpts from "../Breadcrumbs/BreadcrumbOpts.tsx";
+import {Notifications} from "../../slices/notificationSlice.ts";
+import {useAppDispatch} from "../../utils/store.ts";
+import {AIService} from "../../services/AIService.ts";
 
 export default function DeckDetails() {
     const navigate = useNavigate();
@@ -38,6 +41,37 @@ export default function DeckDetails() {
         }
     }, [isDemo, demoDeckObj]);
 
+    // TODO: AI CODE
+    const dispatch = useAppDispatch();
+
+    const [file, setFile] = useState<File | null>();
+    const [result, setResult] = useState<any>(null);
+    const [loading, setLoading] = useState(false);
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files?.[0]) {
+            setFile(e.target.files[0]);
+        }
+    };
+
+    const handleSubmit = async () => {
+        if (!file) {
+            dispatch(Notifications.notifyError('Please select a file.'));
+            return;
+        }
+
+        setLoading(true);
+
+        AIService.createDeckFromDS(file).then((data) => {
+            setResult(data);
+        }).catch((error) => {
+            console.log(error);
+            dispatch(Notifications.notifyError(error.toString(), 4000));
+        }).finally(() => {
+            setLoading(false);
+        });
+    };
+
     return (
         <Container maxWidth="lg">
             <BreadcrumbOpts elements={breadcrumbs}/>
@@ -48,6 +82,17 @@ export default function DeckDetails() {
                 gap: '2rem',
                 marginTop: '2rem',
             }}>
+                <input
+                    type="file"
+                    onChange={handleFileChange}
+                />
+                <Button onClick={handleSubmit} disabled={loading}>{loading ? 'Loading...' : 'Submit'}</Button>
+                {result && (
+                    <div>
+                        <h2>Result:</h2>
+                        <pre>{JSON.stringify(result, null, 2)}</pre>
+                    </div>
+                )}
                 <Card sx={{maxWidth: 800}}>
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
