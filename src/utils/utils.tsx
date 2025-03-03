@@ -12,9 +12,6 @@ export const handleApiError = (error: any) => {
         const status = error.response?.status;
         const errorData = error.response?.data;
 
-        console.error("API Error:", error);
-        console.log("CODEEE", code);
-
         if (code === "ERR_NETWORK") {
             return Promise.reject(new Error("File size is too large (more than 10MB) or network error occurred."));
         }
