@@ -11,11 +11,12 @@ import {
     Typography
 } from "@mui/material";
 import {useAppDispatch} from "../../utils/store.ts";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import {isEmpty, Transition} from "../../utils/utils.tsx";
 import {Notifications} from "../../slices/notificationSlice.ts";
-import {NewADeck} from "../../types/models/DeckModel.ts";
+import {NewADeckModel} from "../../types/models/DeckModel.ts";
 import {AIService} from "../../services/AIService.ts";
+import {updateDeck} from "../../slices/demoSlice.ts";
 
 interface CreateDeckAutomaticalyModalProps {
     isOpen: boolean;
@@ -23,31 +24,40 @@ interface CreateDeckAutomaticalyModalProps {
     handleClose: (event: object, reason: string) => void;
 }
 
-export default function CreateDeckAutomaticalyModal(props: CreateDeckAutomaticalyModalProps) {
-    const {isOpen, handleClose} = props;
+export default function CreateDeckAutomaticallyModal(props: CreateDeckAutomaticalyModalProps) {
+    const {isOpen, isDemo, handleClose} = props;
     const dispatch = useAppDispatch();
 
-    // TODO: check "isEditing"
-    const [isEditing, setIsEditing] = useState(false);
     const [file, setFile] = useState<File | null>();
-    const [newDeck, setNewDeck] = useState<NewADeck | null>(null);
+    const [newDeck, setNewDeck] = useState<NewADeckModel | null>(null);
     const [loading, setLoading] = useState(false);
     const [nameError, setNameError] = useState<boolean>(false);
     const [descriptionError, setDescriptionError] = useState<boolean>(false);
 
-    // TODO: check "isEditing"
-    const saveChanges = () => {
-        setIsEditing(false);
-        // dispatch(updateCardTitleAndDescription(cardToUpdate));
-        dispatch(Notifications.notifySuccess('Successful update!', 2000));
-        // handleClose();
+    const inputFile = useRef<HTMLInputElement>(null);
+
+    const hasErrors = useMemo(() => nameError || descriptionError, [nameError, descriptionError]);
+
+    const saveChanges = (event: object, reason: string) => {
+        if (newDeck) {
+            if (isDemo) {
+                dispatch(updateDeck(newDeck));
+            }
+
+            dispatch(Notifications.notifySuccess(`New Deck ${newDeck?.name} was created!`, 2000));
+            handleCloseModal(event, reason);
+        }
     }
 
-    const handleCloseModal = (event: object, reason: string) => {
-        if (isEditing) {
-            // setCardToUpdate(selectedCard);
-            setIsEditing(false);
+    const handleResetForm = () => {
+        if (inputFile.current) {
+            inputFile.current.value = "";
+            setNewDeck(null);
         }
+    };
+
+    const handleCloseModal = (event: object, reason: string) => {
+        handleResetForm();
         handleClose(event, reason);
     }
 
@@ -116,7 +126,9 @@ export default function CreateDeckAutomaticalyModal(props: CreateDeckAutomatical
                         Upload a PDF file to create a deck automatically
                     </Typography>
                     <input
+                        data-testid="input-file"
                         type="file"
+                        ref={inputFile}
                         onChange={handleFileChange}
                     />
                     <Button onClick={handleSubmit} disabled={loading}>{loading ? 'Loading...' : 'Submit'}</Button>
@@ -154,7 +166,7 @@ export default function CreateDeckAutomaticalyModal(props: CreateDeckAutomatical
                                 helperText={descriptionError ? 'Description can not be empty' : ''}
                             />
 
-                            <h2>Cards {`(${newDeck.cardsList.length})`}:</h2>
+                            <h2>{`${newDeck.cardsList.length === 1 ? "Card" : "Cards"} (${newDeck.cardsList.length})`}:</h2>
 
                             {newDeck.cardsList.map((newCard, index) => (
                                 <Box key={newCard.title}>
@@ -179,11 +191,7 @@ export default function CreateDeckAutomaticalyModal(props: CreateDeckAutomatical
             <DialogActions>
                 <Button onClick={(event: object) => handleCloseModal(event, "close")}>Close</Button>
 
-                {isEditing ? (
-                    <Button onClick={saveChanges} disabled={true}>Save changes</Button>
-                ) : (
-                    <Button onClick={saveChanges}>Edit</Button>
-                )}
+                <Button data-testid="create-button" onClick={(event: object) => saveChanges(event, "close")} disabled={hasErrors}>Create</Button>
             </DialogActions>
         </Dialog>
     );

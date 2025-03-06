@@ -11,7 +11,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import './deckDetails.css';
 import DeckStats from "./DeckStats.tsx";
 import BreadcrumbOpts from "../Breadcrumbs/BreadcrumbOpts.tsx";
-import CreateDeckAutomaticalyModal from "./CreateDeckAutomaticalyModal.tsx";
+import CreateDeckAutomaticallyModal from "./CreateDeckAutomaticallyModal.tsx";
 
 export default function DeckDetails() {
     const navigate = useNavigate();
@@ -109,8 +109,8 @@ export default function DeckDetails() {
 
                 <DeckStats deckCards={deck?.cards || []} isDemo={isDemo}/>
             </Box>
-            <CreateDeckAutomaticalyModal isOpen={openCreateADeckModal} isDemo={isDemo}
-                                         handleClose={handleCloseCreateADeckModal}/>
+            <CreateDeckAutomaticallyModal isOpen={openCreateADeckModal} isDemo={isDemo}
+                                          handleClose={handleCloseCreateADeckModal}/>
         </Container>
     );
 }
