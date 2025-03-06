@@ -52,8 +52,8 @@ describe('DeckStats', () => {
         render(<DeckStats deckCards={mockCards as CardModel[]} isDemo={isDemo}/>);
 
         // Check if the probability is formatted as a percentage
-        expect(screen.getByText('0.25%')).toBeInTheDocument();
-        expect(screen.getByText('0.50%')).toBeInTheDocument();
+        expect(screen.getByText('0.250%')).toBeInTheDocument();
+        expect(screen.getByText('0.500%')).toBeInTheDocument();
     });
 
     it('formats the lastDisplayed column correctly', () => {

@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {DeckModel} from "../types/models/DeckModel.ts";
+import {DeckModel, NewADeckModel, toDeckModel} from "../types/models/DeckModel.ts";
 import {deck1} from "../testData/deckData.ts";
 import {CardModel} from "../types/models/CardModel.ts";
 import {RootState} from "../utils/store.ts";
@@ -73,12 +73,22 @@ const demoSlice = createSlice({
                 }
             }
         },
+        updateDeck(state, action: PayloadAction<NewADeckModel>) {
+            if (!state.deck) return;
+
+            const newDeckModel = toDeckModel(action.payload);
+
+            return {
+                ...state,
+                deck: newDeckModel
+            }
+        },
     },
 });
 
 export const {
     setDemoMode, updateCardRate,
-    updateCardTitleAndDescription
+    updateCardTitleAndDescription, updateDeck
 } = demoSlice.actions;
 export const isDemoSelector = (state: RootState): boolean => state.demoInfo.isShowingDemo;
 export const demoDeckSelector = (state: RootState): DeckModel => state.demoInfo.deck;

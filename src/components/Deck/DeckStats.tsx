@@ -36,7 +36,7 @@ export default function DeckStats(props: DeckStatsProps) {
             field: 'lastDisplayed',
             headerName: 'Last displayed',
             flex: 1,
-            valueGetter: (value) => new Date(value).toDateString()
+            valueGetter: (value) => value ? new Date(value).toDateString() : "Not displayed yet"
         },
         {
             field: 'probability',
@@ -44,7 +44,7 @@ export default function DeckStats(props: DeckStatsProps) {
             type: 'number',
             flex: 1,
             align: 'center',
-            valueFormatter: (value) => `${Number(value).toFixed(2)}%`
+            valueFormatter: (value) => `${Number(value).toFixed(3)}%`
         },
     ];
 

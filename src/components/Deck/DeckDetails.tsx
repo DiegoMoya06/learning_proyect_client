@@ -6,13 +6,12 @@ import {Box, Button, Card, CardActions, CardContent, Chip, Container, Typography
 import CircularProgressWithLabel from "./CircularProgressWithLabel.tsx";
 import PendingIcon from '@mui/icons-material/Pending';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import AddIcon from '@mui/icons-material/Add';
 import {useLocation, useNavigate} from "react-router-dom";
 import './deckDetails.css';
 import DeckStats from "./DeckStats.tsx";
 import BreadcrumbOpts from "../Breadcrumbs/BreadcrumbOpts.tsx";
-import {Notifications} from "../../slices/notificationSlice.ts";
-import {useAppDispatch} from "../../utils/store.ts";
-import {AIService} from "../../services/AIService.ts";
+import CreateDeckAutomaticallyModal from "./CreateDeckAutomaticallyModal.tsx";
 
 export default function DeckDetails() {
     const navigate = useNavigate();
@@ -21,6 +20,7 @@ export default function DeckDetails() {
     const demoDeckObj = useSelector(demoDeckSelector);
 
     const [deck, setDeck] = useState<DeckModel>();
+    const [openCreateADeckModal, setOpenCreateADeckModal] = useState<boolean>(false);
 
     const isDemo = useMemo(() => location.state?.isDemo ?? false, [location.state]);
     const cardsTotal = deck?.cards?.length ?? 0;
@@ -33,6 +33,16 @@ export default function DeckDetails() {
         navigate('../library/cards/' + deck?.id, {state: {isDemo: true}})
     ), [navigate, deck?.id]);
 
+    const handleCreateADeck = () => {
+        setOpenCreateADeckModal(true);
+    };
+
+    const handleCloseCreateADeckModal = (_event: object, reason: string) => {
+        if (reason !== "backdropClick" && reason !== "escapeKeyDown") {
+            setOpenCreateADeckModal(false);
+        }
+    };
+
     useEffect(() => {
         if (isDemo) {
             setDeck(demoDeckObj);
@@ -41,40 +51,14 @@ export default function DeckDetails() {
         }
     }, [isDemo, demoDeckObj]);
 
-    // TODO: AI CODE
-    const dispatch = useAppDispatch();
-
-    const [file, setFile] = useState<File | null>();
-    const [result, setResult] = useState<any>(null);
-    const [loading, setLoading] = useState(false);
-
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files?.[0]) {
-            setFile(e.target.files[0]);
-        }
-    };
-
-    const handleSubmit = async () => {
-        if (!file) {
-            dispatch(Notifications.notifyError('Please select a file.'));
-            return;
-        }
-
-        setLoading(true);
-
-        AIService.createDeckFromDS(file).then((data) => {
-            setResult(data);
-        }).catch((error) => {
-            console.log(error);
-            dispatch(Notifications.notifyError(error.toString(), 4000));
-        }).finally(() => {
-            setLoading(false);
-        });
-    };
-
     return (
         <Container maxWidth="lg">
-            <BreadcrumbOpts elements={breadcrumbs}/>
+            <Box sx={{display: "flex", justifyContent: "space-between", alignItems: "baseline"}}>
+                <BreadcrumbOpts elements={breadcrumbs}/>
+                <Button variant="outlined" size="small" startIcon={<AddIcon/>} onClick={handleCreateADeck}>
+                    Create Deck
+                </Button>
+            </Box>
             <Box sx={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -82,17 +66,7 @@ export default function DeckDetails() {
                 gap: '2rem',
                 marginTop: '2rem',
             }}>
-                <input
-                    type="file"
-                    onChange={handleFileChange}
-                />
-                <Button onClick={handleSubmit} disabled={loading}>{loading ? 'Loading...' : 'Submit'}</Button>
-                {result && (
-                    <div>
-                        <h2>Result:</h2>
-                        <pre>{JSON.stringify(result, null, 2)}</pre>
-                    </div>
-                )}
+
                 <Card sx={{maxWidth: 800}}>
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
@@ -135,6 +109,8 @@ export default function DeckDetails() {
 
                 <DeckStats deckCards={deck?.cards || []} isDemo={isDemo}/>
             </Box>
+            <CreateDeckAutomaticallyModal isOpen={openCreateADeckModal} isDemo={isDemo}
+                                          handleClose={handleCloseCreateADeckModal}/>
         </Container>
     );
 }

@@ -1,22 +1,12 @@
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Slide} from "@mui/material";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider} from "@mui/material";
 import React, {useEffect, useMemo, useState} from "react";
-import {TransitionProps} from "@mui/material/transitions";
 import {CardModel} from "../../types/models/CardModel.ts";
 import CardToDisplay from "./CardToDisplay.tsx";
 import {useAppDispatch} from "../../utils/store.ts";
 import {updateCardTitleAndDescription} from "../../slices/demoSlice.ts";
-import {isEmpty} from "../../utils/utils.tsx";
+import {isEmpty, Transition} from "../../utils/utils.tsx";
 import {demoUser} from "../../testData/userData.ts";
 import {Notifications} from "../../slices/notificationSlice.ts";
-
-const Transition = React.forwardRef(function Transition(
-    props: TransitionProps & {
-        children: React.ReactElement<any, any>;
-    },
-    ref: React.Ref<unknown>,
-) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
 
 interface CardModalProps {
     isOpen: boolean;
@@ -80,7 +70,7 @@ export default function CardModal(props: Readonly<CardModalProps>) {
             onClose={handleCloseModal}
             aria-describedby="card-modal"
         >
-            <DialogTitle id="card-modal-title">{"Card Information"}</DialogTitle>
+            <DialogTitle id="card-modal-title">Card Information</DialogTitle>
             <Divider/>
             <DialogContent id="card-modal-description">
                 <CardToDisplay cardData={cardToUpdate} isEditing={isEditing} updateCardTitle={handleUpdateCardTitle}
@@ -89,7 +79,7 @@ export default function CardModal(props: Readonly<CardModalProps>) {
             <Divider/>
             <DialogActions>
                 <Button onClick={handleCloseModal}>Close</Button>
-                
+
                 {isEditing ? (
                     <Button onClick={saveChanges} disabled={isDataInvalid}>Save changes</Button>
                 ) : (
