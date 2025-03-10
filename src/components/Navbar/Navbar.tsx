@@ -51,6 +51,7 @@ export default function Navbar() {
 
     const navigateTo = useCallback((url: string) => {
         navigate(url);
+        handleCloseNavMenu();
     }, [navigate]);
 
     return (
@@ -104,9 +105,8 @@ export default function Navbar() {
                             onClose={handleCloseNavMenu}
                             sx={{display: {xs: 'block', md: 'none'}}}
                         >
-                            {/*TODO: add here the navigation*/}
                             {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                                <MenuItem key={page} onClick={() => navigateTo(`/${page.toLowerCase()}`)}>
                                     <Typography sx={{textAlign: 'center'}}>{page}</Typography>
                                 </MenuItem>
                             ))}
@@ -117,7 +117,7 @@ export default function Navbar() {
                         variant="h5"
                         noWrap
                         component="a"
-                        href="#app-bar-with-responsive-menu"
+                        href="/"
                         sx={{
                             mr: 2,
                             display: {xs: 'flex', md: 'none'},
@@ -135,7 +135,7 @@ export default function Navbar() {
                         {pages.map((page) => (
                             <Button
                                 key={page}
-                                onClick={() => navigateTo('/library')}
+                                onClick={() => navigateTo(`/${page.toLowerCase()}`)}
                                 sx={{my: 2, color: 'white', display: 'block'}}
                             >
                                 {page}

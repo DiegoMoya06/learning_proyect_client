@@ -53,9 +53,6 @@ describe('Navbar', () => {
         expect(await screen.findByTestId(/\bmenu-item-Logout\b/i)).toBeInTheDocument();
     });
 
-    // TODO: complete tests to check the routing
-    // TODO: (e.g., clicking on the wrong element or failure to navigate)
-
     it('Should navigate', async () => {
         const libraries = await screen.findAllByText(/\blibrary\b/i);
 
@@ -70,5 +67,14 @@ describe('Navbar', () => {
         fireEvent.click(logo[0]);
         expect(mockNavigate).toHaveBeenCalledTimes(2);
         expect(mockNavigate).toHaveBeenLastCalledWith("/");
+    });
+
+    it('Should navigate to Edit', async () => {
+        const edit = await screen.findAllByText(/\edit\b/i);
+
+        expect(edit).toHaveLength(2);
+        fireEvent.click(edit[0]);
+        expect(mockNavigate).toHaveBeenCalledTimes(3);
+        expect(mockNavigate).toHaveBeenLastCalledWith("/edit");
     });
 });
