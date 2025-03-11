@@ -82,30 +82,4 @@ describe('DeckDetails Component', () => {
         expect(navigateMock).toHaveBeenCalledTimes(1);
         expect(navigateMock).toHaveBeenCalledWith('../library/cards/'+deck1.id,{state: {isDemo: true}});
     });
-
-    // TODO: fix, is giving an error at the build time because the reducer is expecting a demoInfo with a deck of the type
-    // DeckModel, it doesn't takes deck as null
-    // it('disables "Start learning" button when deck is not available', () => {
-    //     store = configureStore({
-    //         reducer: {
-    //             demoInfo: demoSlice, // Ensure this matches your real Redux setup
-    //         },
-    //         preloadedState: {
-    //             demoInfo: {
-    //                 deck: null, // No deck data
-    //                 isShowingDemo: true,
-    //             },
-    //         },
-    //     });
-    //
-    //     render(
-    //         <Provider store={store}>
-    //             <MemoryRouter>
-    //                 <DeckDetails/>
-    //             </MemoryRouter>
-    //         </Provider>
-    //     );
-    //
-    //     expect(screen.getByText('Start learning')).toBeDisabled();
-    // });
 });

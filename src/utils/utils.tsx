@@ -2,8 +2,8 @@ import axios from "axios";
 import React from "react";
 import {TransitionProps} from "@mui/material/transitions";
 import {Slide} from "@mui/material";
-// TODO: add env variable later
-export const baseUrl = "http://localhost:8080/";
+
+export const baseUrl = process.env.LC_BASE_URL;
 
 export const isEmpty = (value: string | null | undefined): boolean => {
     return !value?.trim();

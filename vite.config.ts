@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
     plugins: [react()],
-    // TODO: server might be deleted, check after connecting with backend
+    // Deprecated
     server: {
         proxy: {
             '/api': {

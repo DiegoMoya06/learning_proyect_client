@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import MenuIcon from '@mui/icons-material/Menu';
+import LoginIcon from '@mui/icons-material/Login';
 import React, {useCallback, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useAuth} from "../AuthContext/AuthProvider.tsx";
@@ -143,12 +144,34 @@ export default function Navbar() {
                         ))}
                     </Box>
                     <Box sx={{flexGrow: 0}}>
-                        {isAuthenticated && (
+                        {isAuthenticated ? (
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{p: 0}} data-testid="avatar-icon-button">
                                     <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg"/>
                                 </IconButton>
                             </Tooltip>
+                        ) : (
+                            <Button variant="text" size="large" sx={{color: 'white'}}
+                                    onClick={() => navigateTo('/login')}
+                                    startIcon={<LoginIcon sx={{display: {xs: 'none', md: 'flex'}}}/>}
+                            data-testId="loginButton">
+                                <Typography
+                                    variant="body2"
+                                    noWrap
+                                    component="a"
+                                    sx={{
+                                        mr: 2,
+                                        display: {xs: 'none', md: 'flex'},
+                                        fontFamily: 'monospace',
+                                        fontWeight: 700,
+                                        letterSpacing: '.3rem',
+                                        color: 'inherit',
+                                        textDecoration: 'none',
+                                    }}
+                                >
+                                    Login
+                                </Typography>
+                            </Button>
                         )}
                         <Menu
                             sx={{mt: '45px'}}
