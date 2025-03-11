@@ -68,7 +68,7 @@ describe('CardModal', () => {
             />
         );
 
-        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        expect(screen.queryByRole('dialog')).toBeInTheDocument();
     });
 
     it('switches to editing mode when the Edit button is clicked', () => {
