@@ -11,6 +11,7 @@ export const isEmpty = (value: string | null | undefined): boolean => {
 
 export const handleApiError = (error: any) => {
     if (axios.isAxiosError(error)) {
+        console.log("ERROR HANDLER",error);
         const code = error?.code;
         const status = error.response?.status;
         const errorData = error.response?.data;
