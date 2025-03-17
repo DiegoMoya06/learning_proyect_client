@@ -30,7 +30,7 @@ export default function Cards() {
 
     const breadcrumbs = [
         {name: 'Dashboard', url: '/'},
-        {name: 'Deck Details', url: '/deckDetails'},
+        {name: 'Deck Details', url: '/deckDetails/' + isDemo.toString()},
         {name: 'Cards View', url: ''}
     ];
 
@@ -40,6 +40,7 @@ export default function Cards() {
 
             if (!selectedCard) {
                 setSelectedCard(getRandomCard(demoCardsList) ?? null);
+                setIsLoading(false);
             }
         } else if (deckId) {
             CardsService.getAllCadsByDeckId(deckId).then((data) => {
@@ -74,15 +75,15 @@ export default function Cards() {
 
                         <Box className="actions">
                             <Button data-testid="again-button" size="large" variant="outlined" endIcon={<ReplayIcon/>}
-                                    onClick={() => handleRateCard("Hard")}>
+                                    onClick={() => handleRateCard("Hard")} disabled={!selectedCard}>
                                 Again
                             </Button>
                             <Button data-testid="good-button" size="large" variant="outlined" endIcon={<DoneIcon/>}
-                                    onClick={() => handleRateCard("Medium")}>
+                                    onClick={() => handleRateCard("Medium")} disabled={!selectedCard}>
                                 Good
                             </Button>
                             <Button data-testid="easy-button" size="large" variant="outlined" endIcon={<DoneAllIcon/>}
-                                    onClick={() => handleRateCard("Easy")}>
+                                    onClick={() => handleRateCard("Easy")} disabled={!selectedCard}>
                                 Easy
                             </Button>
                         </Box>

@@ -14,5 +14,10 @@ export default defineConfig({
             }
         }
     },
-    define: {'process.env': process.env}
+    define: {'process.env': process.env},
+    optimizeDeps: {
+        include: [
+            '@mui/icons-material',
+        ]
+    }
 })

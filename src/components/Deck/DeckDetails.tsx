@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useMemo, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {demoDeckSelector} from "../../slices/demoSlice.ts";
 import {DeckModel} from "../../types/models/DeckModel.ts";
@@ -7,7 +7,7 @@ import CircularProgressWithLabel from "./CircularProgressWithLabel.tsx";
 import PendingIcon from '@mui/icons-material/Pending';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import AddIcon from '@mui/icons-material/Add';
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import './deckDetails.css';
 import DeckStats from "./DeckStats.tsx";
 import BreadcrumbOpts from "../Breadcrumbs/BreadcrumbOpts.tsx";
@@ -15,14 +15,12 @@ import CreateDeckAutomaticallyModal from "./CreateDeckAutomaticallyModal.tsx";
 
 export default function DeckDetails() {
     const navigate = useNavigate();
-    const location = useLocation();
-
+    const {isDemo} = useParams();
     const demoDeckObj = useSelector(demoDeckSelector);
 
     const [deck, setDeck] = useState<DeckModel>();
     const [openCreateADeckModal, setOpenCreateADeckModal] = useState<boolean>(false);
 
-    const isDemo = useMemo(() => location.state?.isDemo ?? false, [location.state]);
     const cardsTotal = deck?.cards?.length ?? 0;
     const learnedCards = deck?.cards?.filter((card) => card.timesDisplayed > 0).length ?? 0;
     const percentage = cardsTotal > 0 ? (learnedCards * 100) / cardsTotal : 0;
@@ -69,11 +67,11 @@ export default function DeckDetails() {
 
                 <Card sx={{maxWidth: 800}}>
                     <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
-                            {deck?.name}
+                        <Typography gutterBottom variant="h5" component="div" data-testid="deck-name">
+                            {deck?.name ? deck?.name : ""}
                         </Typography>
-                        <Typography variant="body1" sx={{color: 'text.secondary'}}>
-                            {deck?.description}
+                        <Typography variant="body1" sx={{color: 'text.secondary'}} data-testid="deck-description">
+                            {deck?.description ?? ""}
                         </Typography>
 
                         <Box sx={{
@@ -107,9 +105,9 @@ export default function DeckDetails() {
                     </CardActions>
                 </Card>
 
-                <DeckStats deckCards={deck?.cards || []} isDemo={isDemo}/>
+                <DeckStats deckCards={deck?.cards || []} isDemo={!!isDemo}/>
             </Box>
-            <CreateDeckAutomaticallyModal isOpen={openCreateADeckModal} isDemo={isDemo}
+            <CreateDeckAutomaticallyModal isOpen={openCreateADeckModal} isDemo={!!isDemo}
                                           handleClose={handleCloseCreateADeckModal}/>
         </Container>
     );

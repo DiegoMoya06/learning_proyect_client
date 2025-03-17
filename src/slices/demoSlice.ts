@@ -13,7 +13,7 @@ export const demoInfoInitialState: DemoInfoData = {
     deck: deck1,
     isShowingDemo: false
 };
-
+// TODO: Change 'demoSlice' for deckSlice
 const demoSlice = createSlice({
     name: 'demoInfo',
     initialState: demoInfoInitialState,

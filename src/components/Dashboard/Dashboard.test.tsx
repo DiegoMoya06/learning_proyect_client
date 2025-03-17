@@ -56,7 +56,7 @@ describe('Dashboard', () => {
             fireEvent.click(cardActionArea);
         }
 
-        expect(mockNavigate).toHaveBeenCalledWith('deckDetails', {state: {isDemo: true}});
+        expect(mockNavigate).toHaveBeenCalledWith('deckDetails/true', {state: {isDemo: true}});
     });
 
     it('dispatches setDemoMode when navigating to deckDetails', async () => {
