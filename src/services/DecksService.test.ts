@@ -31,7 +31,7 @@ describe('DecksService', () => {
     it("should handle API errors", async () => {
         const getSpy = vi.spyOn(axios, "get").mockRejectedValue(new Error("Network Error"));
 
-        await expect(DecksService.getAllDecks()).rejects.toThrow("Network Error");
+        await expect(DecksService.getAllDecks()).rejects.toThrow("Network error or unexpected issue");
         expect(getSpy).toHaveBeenCalledTimes(1);
     });
 });

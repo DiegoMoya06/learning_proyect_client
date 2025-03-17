@@ -13,5 +13,11 @@ export default defineConfig({
                 rewrite: (path) => path.replace(/^\/api/, ''),
             }
         }
+    },
+    define: {'process.env': process.env},
+    optimizeDeps: {
+        include: [
+            '@mui/icons-material',
+        ]
     }
 })

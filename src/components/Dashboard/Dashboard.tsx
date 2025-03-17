@@ -18,7 +18,7 @@ export default function Dashboard() {
             dispatch(setDemoMode(true));
         }
 
-        navigate(url, {state: {isDemo: true}});
+        navigate(`${url}/true`, {state: {isDemo: true}});
     }, []);
 
     return (

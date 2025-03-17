@@ -1,5 +1,5 @@
-import {Box, Button, Container} from "@mui/material";
-import {useCallback, useEffect, useState} from "react";
+import {Box, Button, CircularProgress, Container} from "@mui/material";
+import {Fragment, useCallback, useEffect, useState} from "react";
 import ReplayIcon from '@mui/icons-material/Replay';
 import DoneIcon from '@mui/icons-material/Done';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
@@ -13,20 +13,24 @@ import {demoCardsSelector} from "../../slices/demoSlice.ts";
 import {WeightType} from "../../types/models/DeckModel.ts";
 import CardToDisplay from "./CardToDisplay.tsx";
 import BreadcrumbOpts from "../Breadcrumbs/BreadcrumbOpts.tsx";
+import {Notifications} from "../../slices/notificationSlice.ts";
+import {useAppDispatch} from "../../utils/store.ts";
 
 export default function Cards() {
     const location = useLocation();
     const {deckId} = useParams();
+    const dispatch = useAppDispatch();
     const {getRandomCard, handleWeight} = useDemo();
     const demoCardsList = useSelector(demoCardsSelector);
     const isDemo = location.state?.isDemo ?? false;
 
     const [dbCards, setDbCards] = useState<CardModel[]>([]);
     const [selectedCard, setSelectedCard] = useState<CardModel | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const breadcrumbs = [
         {name: 'Dashboard', url: '/'},
-        {name: 'Deck Details', url: '/deckDetails'},
+        {name: 'Deck Details', url: '/deckDetails/' + isDemo.toString()},
         {name: 'Cards View', url: ''}
     ];
 
@@ -36,13 +40,15 @@ export default function Cards() {
 
             if (!selectedCard) {
                 setSelectedCard(getRandomCard(demoCardsList) ?? null);
+                setIsLoading(false);
             }
         } else if (deckId) {
             CardsService.getAllCadsByDeckId(deckId).then((data) => {
                 setDbCards(data);
             }).catch((error) => {
-                console.log("Error", error);
-            });
+                console.log(error);
+                dispatch(Notifications.notifyError(error.toString(), 4000))
+            }).finally(() => setIsLoading(false));
         }
     }, [isDemo, deckId, demoCardsList, selectedCard]);
 
@@ -61,22 +67,28 @@ export default function Cards() {
             <BreadcrumbOpts elements={breadcrumbs}/>
 
             <Box className="main_content">
-                <CardToDisplay cardData={selectedCard} isEditing={false} />
+                {isLoading ? (
+                    <CircularProgress size="3rem"/>
+                ) : (
+                    <Fragment>
+                        <CardToDisplay cardData={selectedCard} isEditing={false}/>
 
-                <Box className="actions">
-                    <Button data-testid="again-button" size="large" variant="outlined" endIcon={<ReplayIcon/>}
-                            onClick={() => handleRateCard("Hard")}>
-                        Again
-                    </Button>
-                    <Button data-testid="good-button" size="large" variant="outlined" endIcon={<DoneIcon/>}
-                            onClick={() => handleRateCard("Medium")}>
-                        Good
-                    </Button>
-                    <Button data-testid="easy-button" size="large" variant="outlined" endIcon={<DoneAllIcon/>}
-                            onClick={() => handleRateCard("Easy")}>
-                        Easy
-                    </Button>
-                </Box>
+                        <Box className="actions">
+                            <Button data-testid="again-button" size="large" variant="outlined" endIcon={<ReplayIcon/>}
+                                    onClick={() => handleRateCard("Hard")} disabled={!selectedCard}>
+                                Again
+                            </Button>
+                            <Button data-testid="good-button" size="large" variant="outlined" endIcon={<DoneIcon/>}
+                                    onClick={() => handleRateCard("Medium")} disabled={!selectedCard}>
+                                Good
+                            </Button>
+                            <Button data-testid="easy-button" size="large" variant="outlined" endIcon={<DoneAllIcon/>}
+                                    onClick={() => handleRateCard("Easy")} disabled={!selectedCard}>
+                                Easy
+                            </Button>
+                        </Box>
+                    </Fragment>
+                )}
             </Box>
         </Container>
     );

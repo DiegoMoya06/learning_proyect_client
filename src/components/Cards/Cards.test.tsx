@@ -15,8 +15,10 @@ vi.mock('react-router-dom', async () => {
 });
 
 const useSelectorMock = vi.fn();
+const useDispatchMock = vi.fn();
 vi.mock('react-redux', () => ({
     useSelector: () => useSelectorMock,
+    useDispatch: () => useDispatchMock
 }));
 
 // Mock useDemo

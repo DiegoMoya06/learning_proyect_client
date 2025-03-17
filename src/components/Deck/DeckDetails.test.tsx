@@ -11,15 +11,18 @@ const navigateMock = vi.fn();
 
 vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual<typeof import('react-router-dom')>('react-router-dom');
+
     return {
         ...actual,
         useNavigate: () => navigateMock,
         useLocation: () => ({state: {isDemo: true}}),
+        useParams: () => ({isDemo: 'true'})
     };
 });
 
 describe('DeckDetails Component', () => {
     let store: any;
+    let useParamsMock = vi.fn();
 
     beforeEach(() => {
         store = configureStore({
@@ -32,6 +35,16 @@ describe('DeckDetails Component', () => {
                     isShowingDemo: true
                 },
             },
+        });
+
+        vi.doMock('react-router-dom', async () => {
+            const actual = await vi.importActual<typeof import('react-router-dom')>('react-router-dom');
+            return {
+                ...actual,
+                useNavigate: () => navigateMock,
+                useLocation: () => ({state: {isDemo: true}}),
+                useParams: useParamsMock
+            };
         });
     });
 
@@ -48,9 +61,6 @@ describe('DeckDetails Component', () => {
             </Provider>
         );
 
-        console.log("Shows state", store.getState());
-        console.log(screen.debug()); // Debugging output to inspect rendered component
-
         expect(screen.getByText(deck1.name)).toBeInTheDocument();
         expect(screen.getByText(deck1.description)).toBeInTheDocument();
     });
@@ -64,7 +74,7 @@ describe('DeckDetails Component', () => {
             </Provider>
         );
 
-        expect(screen.getByText('Total number of cards: '+deck1.cards?.length)).toBeInTheDocument();
+        expect(screen.getByText('Total number of cards: ' + deck1.cards?.length)).toBeInTheDocument();
         expect(screen.getByText('20 cards to learn')).toBeInTheDocument();
         expect(screen.getByText('0 cards to repeat')).toBeInTheDocument();
     });
@@ -80,6 +90,6 @@ describe('DeckDetails Component', () => {
 
         fireEvent.click(screen.getByText('Start learning'));
         expect(navigateMock).toHaveBeenCalledTimes(1);
-        expect(navigateMock).toHaveBeenCalledWith('../library/cards/'+deck1.id,{state: {isDemo: true}});
+        expect(navigateMock).toHaveBeenCalledWith('../library/cards/' + deck1.id, {state: {isDemo: true}});
     });
 });
