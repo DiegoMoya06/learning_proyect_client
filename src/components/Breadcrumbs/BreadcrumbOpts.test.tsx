@@ -2,6 +2,7 @@ import {fireEvent, render, screen} from '@testing-library/react';
 import {describe, expect, it, vi} from 'vitest';
 import BreadcrumbOpts, {BreadcrumbInfo} from './BreadcrumbOpts';
 import {MemoryRouter, useNavigate} from 'react-router-dom';
+import {deck1} from "../../testData/deckData.ts";
 
 // Mock the useNavigate hook
 vi.mock('react-router-dom', async () => {
@@ -15,7 +16,7 @@ vi.mock('react-router-dom', async () => {
 describe('BreadcrumbOpts', () => {
     const mockElements: BreadcrumbInfo[] = [
         {name: 'Home', url: '/'},
-        {name: 'Deck Details', url: '/deckDetails'},
+        {name: 'Deck Details', url: '/deckDetails/false', state: {selectedDBDeck: deck1}},
         {name: 'Card Details', url: '/cardDetails'},
     ];
     const mockNavigate = vi.fn();
@@ -44,22 +45,16 @@ describe('BreadcrumbOpts', () => {
     });
 
     it('navigates to the correct URL when a breadcrumb is clicked', () => {
-
-        // Click the "Home" breadcrumb
         const homeBreadcrumb = screen.getByText('Home');
         fireEvent.click(homeBreadcrumb);
 
-        // Check if navigate was called with the correct URL
         expect(mockNavigate).toHaveBeenCalledWith('/');
     });
 
     it('navigates with state when the URL is /deckDetails', () => {
-
-        // Click the "Deck Details" breadcrumb
         const deckDetailsBreadcrumb = screen.getByText('Deck Details');
         fireEvent.click(deckDetailsBreadcrumb);
 
-        // Check if navigate was called with the correct URL and state
-        expect(mockNavigate).toHaveBeenCalledWith('/deckDetails', {state: {isDemo: true}});
+        expect(mockNavigate).toHaveBeenCalledWith('/deckDetails/false', {state: {selectedDBDeck: deck1}});
     });
 });

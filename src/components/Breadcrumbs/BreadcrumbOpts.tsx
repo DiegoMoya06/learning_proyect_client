@@ -1,9 +1,14 @@
 import {Breadcrumbs, Link, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
+import {DeckModel} from "../../types/models/DeckModel.ts";
 
 export interface BreadcrumbInfo {
     name: string;
     url: string;
+    state?: {
+        isDemo?: boolean,
+        selectedDBDeck?: DeckModel
+    };
 }
 
 interface BreadcrumbOptsProps {
@@ -15,9 +20,11 @@ export default function BreadcrumbOpts(props: Readonly<BreadcrumbOptsProps>) {
     const {elements} = props;
     const navigate = useNavigate();
 
-    const handleBreadcrumbClick = (url: string) => {
-        if (url === '/deckDetails') {
-            navigate(url, {state: {isDemo: true}});
+    const handleBreadcrumbClick = (breadcrumbData: BreadcrumbInfo) => {
+        const {url, state} = breadcrumbData;
+
+        if (url.includes('/deckDetails')) {
+            navigate(url, {state: {selectedDBDeck: state?.selectedDBDeck}});
         } else {
             navigate(url);
         }
@@ -28,7 +35,7 @@ export default function BreadcrumbOpts(props: Readonly<BreadcrumbOptsProps>) {
             {elements.map((element, index) => (
                 (index + 1) !== elements.length ?
                     <Link key={element.name} underline="hover" component="button" color="inherit"
-                          onClick={() => handleBreadcrumbClick(element.url)}>
+                          onClick={() => handleBreadcrumbClick(element)}>
                         {element.name}
                     </Link> :
                     <Typography key={element.name} sx={{color: 'text.primary'}}>

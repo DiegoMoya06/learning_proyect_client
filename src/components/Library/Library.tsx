@@ -30,6 +30,7 @@ export default function Library() {
     useEffect(() => {
         DecksService.getAllDecks().then((data) => {
             setDecks(data);
+            dispatch(Notifications.notifySuccess("Decks loaded correctly"));
         }).catch((error) => {
             console.log(error);
             let formattedError = error.toString();
@@ -43,8 +44,10 @@ export default function Library() {
     }, []);
 
     const handleSelectedDeck = useCallback((deckId: string) => {
-        navigate('./cards/' + deckId);
-    }, [navigate]);
+        const selectedDBDeck = decks.filter(deck => deck.id === deckId)[0];
+
+        navigate('../deckDetails/false', {state: {selectedDBDeck}});
+    }, [decks, navigate]);
 
     return (
         <Container maxWidth="lg">
