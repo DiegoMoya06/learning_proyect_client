@@ -40,12 +40,6 @@ export default function Cards() {
     ];
 
     useEffect(() => {
-        console.log("IsDemo", isDemo);
-        console.log("dbDeck", dbDeck);
-        console.log("dbCards", dbCards);
-        console.log("isLoading", isLoading);
-    }, [isDemo, dbDeck, dbCards, isLoading]);
-    useEffect(() => {
         if (isDemo) {
             setDbCards(demoCardsList);
             if (!selectedCard) {
@@ -76,14 +70,13 @@ export default function Cards() {
         if (isDemo) {
             handleWeight(weightType, selectedCard, totalRate);
         } else {
-            // CardsService.updateCardWeight(weightType,selectedCard.id).then((data) => {
-            //     TODO: complete
-            //     setDbCards(data);
-                //     setSelectedCard(getRandomCard(data) ?? null);
-            // }).catch((error) => {
-            //     console.log(error);
-            //     dispatch(Notifications.notifyError(error.toString(), 4000))
-            // });
+            CardsService.updateCardWeight(weightType, selectedCard.id).then((data) => {
+                setDbCards(data.cards ?? []);
+                setSelectedCard(getRandomCard(data.cards ?? []) ?? null);
+            }).catch((error) => {
+                console.log(error);
+                dispatch(Notifications.notifyError(error.toString(), 4000))
+            });
         }
         const randomCard = getRandomCard(dbCards, selectedCard?.id) ?? null;
         setSelectedCard(randomCard);

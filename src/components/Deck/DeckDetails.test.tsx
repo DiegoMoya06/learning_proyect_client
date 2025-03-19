@@ -90,6 +90,11 @@ describe('DeckDetails Component', () => {
 
         fireEvent.click(screen.getByText('Start learning'));
         expect(navigateMock).toHaveBeenCalledTimes(1);
-        expect(navigateMock).toHaveBeenCalledWith('../library/cards/' + deck1.id, {state: {isDemo: true}});
+        expect(navigateMock).toHaveBeenCalledWith('../library/cards/' + deck1.id, {
+            state: {
+                isDemo: true,
+                dbDeck: deck1
+            }
+        });
     });
 });
