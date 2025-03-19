@@ -7,7 +7,7 @@ import CircularProgressWithLabel from "./CircularProgressWithLabel.tsx";
 import PendingIcon from '@mui/icons-material/Pending';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import AddIcon from '@mui/icons-material/Add';
-import {useNavigate, useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import './deckDetails.css';
 import DeckStats from "./DeckStats.tsx";
 import BreadcrumbOpts from "../Breadcrumbs/BreadcrumbOpts.tsx";
@@ -16,7 +16,11 @@ import CreateDeckAutomaticallyModal from "./CreateDeckAutomaticallyModal.tsx";
 export default function DeckDetails() {
     const navigate = useNavigate();
     const {isDemo} = useParams();
+    const isDemoType = isDemo === 'true';
     const demoDeckObj = useSelector(demoDeckSelector);
+    const location = useLocation();
+
+    const selectedDBDeck: DeckModel = location.state?.selectedDBDeck;
 
     const [deck, setDeck] = useState<DeckModel>();
     const [openCreateADeckModal, setOpenCreateADeckModal] = useState<boolean>(false);
@@ -25,11 +29,15 @@ export default function DeckDetails() {
     const learnedCards = deck?.cards?.filter((card) => card.timesDisplayed > 0).length ?? 0;
     const percentage = cardsTotal > 0 ? (learnedCards * 100) / cardsTotal : 0;
 
-    const breadcrumbs = [{name: 'Dashboard', url: '/'}, {name: 'Deck Details', url: ''}];
+    const breadcrumbs = [
+        {name: 'Dashboard', url: '/'},
+        ...(isDemoType ? [] : [{name: 'Library', url: '/library'}]),
+        {name: 'Deck Details', url: ''}
+    ];
 
     const handleStartLearning = useCallback(() => (
-        navigate('../library/cards/' + deck?.id, {state: {isDemo: true}})
-    ), [navigate, deck?.id]);
+        navigate('../library/cards/' + deck?.id, {state: {isDemo: isDemoType, dbDeck: deck}})
+    ), [navigate, deck, isDemoType]);
 
     const handleCreateADeck = () => {
         setOpenCreateADeckModal(true);
@@ -42,20 +50,18 @@ export default function DeckDetails() {
     };
 
     useEffect(() => {
-        if (isDemo) {
-            setDeck(demoDeckObj);
-        } else {
-            //     TODO: call service to fill cards
-        }
-    }, [isDemo, demoDeckObj]);
+        setDeck(isDemoType ? demoDeckObj : selectedDBDeck);
+    }, [isDemoType, demoDeckObj, selectedDBDeck]);
 
     return (
         <Container maxWidth="lg">
             <Box sx={{display: "flex", justifyContent: "space-between", alignItems: "baseline"}}>
                 <BreadcrumbOpts elements={breadcrumbs}/>
-                <Button variant="outlined" size="small" startIcon={<AddIcon/>} onClick={handleCreateADeck}>
-                    Create Deck
-                </Button>
+                {isDemoType && (
+                    <Button variant="outlined" size="small" startIcon={<AddIcon/>} onClick={handleCreateADeck}>
+                        Create Deck
+                    </Button>
+                )}
             </Box>
             <Box sx={{
                 display: 'flex',
@@ -105,9 +111,9 @@ export default function DeckDetails() {
                     </CardActions>
                 </Card>
 
-                <DeckStats deckCards={deck?.cards || []} isDemo={!!isDemo}/>
+                <DeckStats deckCards={deck?.cards || []} isDemo={isDemoType}/>
             </Box>
-            <CreateDeckAutomaticallyModal isOpen={openCreateADeckModal} isDemo={!!isDemo}
+            <CreateDeckAutomaticallyModal isOpen={openCreateADeckModal} isDemo={isDemoType}
                                           handleClose={handleCloseCreateADeckModal}/>
         </Container>
     );
