@@ -3,7 +3,7 @@ import {baseUrl, handleApiError} from "../utils/utils.tsx";
 import {CardModel} from "../types/models/CardModel.ts";
 import {DeckModel, WeightType} from "../types/models/DeckModel.ts";
 
-const cardsUrl = "card/";
+const cardsUrl = "cards/";
 
 export const CardsService = {
 
@@ -28,9 +28,13 @@ export const CardsService = {
         }
     },
 
-    async updateCardWeight(weightType: WeightType, cardId: string) {
+    async updateCardWeight(weightType: WeightType, cardTitle: string) {
         try {
-            const response = await axios.put<DeckModel>(`/${cardId}`, weightType);
+            const response = await axios.put<DeckModel>(
+                `${baseUrl}${cardsUrl}`,
+                {cardTitle, weightType: weightType.toString()},
+                {headers: {"Content-Type": "application/json"}}
+            );
 
             return response.data;
         } catch (error) {
@@ -38,7 +42,7 @@ export const CardsService = {
         }
     },
 
-    async deleteCard(cardId:string) {
+    async deleteCard(cardId: string) {
         try {
             const response = await axios.delete(`/${cardId}`);
 

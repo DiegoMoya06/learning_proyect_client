@@ -23,6 +23,7 @@ export default function AppRoutes() {
                 {/* Public routes */}
                 <Route path="/login" element={login}/>
                 <Route path="/" element={dashboard}/>
+                <Route path="/Dashboard" element={dashboard}/>
                 <Route path="/deckDetails/:isDemo" element={deckDetails}/>
                 <Route path="/library/cards/:deckId" element={cardsView}/>
                 <Route path="*" element={notFound}/>
