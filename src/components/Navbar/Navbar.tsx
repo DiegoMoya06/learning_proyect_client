@@ -47,6 +47,8 @@ export default function Navbar() {
         if (element === "Logout") {
             logout();
         }
+
+        navigate("../"+element);
         handleCloseUserMenu();
     };
 
