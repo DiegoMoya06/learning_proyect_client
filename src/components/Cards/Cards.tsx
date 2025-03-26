@@ -70,7 +70,7 @@ export default function Cards() {
         if (isDemo) {
             handleWeight(weightType, selectedCard, totalRate);
         } else {
-            CardsService.updateCardWeight(weightType, selectedCard.title).then((data) => {
+            CardsService.updateCardWeight(weightType, selectedCard.id).then((data) => {
                 setDbCards(data.cards ?? []);
                 setSelectedCard(getRandomCard(data.cards ?? []) ?? null);
             }).catch((error) => {
