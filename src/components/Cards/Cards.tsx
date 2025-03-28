@@ -55,7 +55,7 @@ export default function Cards() {
                 setDbCards(data);
                 setSelectedCard(getRandomCard(data) ?? null);
             }).catch((error) => {
-                console.log(error);
+                console.error(error);
                 dispatch(Notifications.notifyError(error.toString(), 4000))
             }).finally(() => setIsLoading(false));
         }
@@ -72,7 +72,7 @@ export default function Cards() {
             let filteredCards = dbCards.filter(card => card.id !== updatedCard?.id)
                 .concat(updatedCard || []);
 
-            const adjustedCards = calculateAdjustedRates(filteredCards,updatedCard.id);
+            const adjustedCards = calculateAdjustedRates(filteredCards,updatedCard?.id);
 
             setDbCards(adjustedCards);
 
@@ -84,7 +84,7 @@ export default function Cards() {
                 setDbCards(data.cards ?? []);
                 setSelectedCard(getRandomCard(data.cards ?? []) ?? null);
             }).catch((error) => {
-                console.log(error);
+                console.error(error);
                 dispatch(Notifications.notifyError(error.toString(), 4000))
             });
         }

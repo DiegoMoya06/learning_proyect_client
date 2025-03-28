@@ -7,7 +7,9 @@ export const useDemo = () => {
 
     // Weighted random selection function
     const getRandomCard = (currentCardsList: CardModel[], currentCardId?: string) => {
-        const eligibleCards = currentCardsList.filter(card => card.id !== currentCardId);
+        const eligibleCards = currentCardId ?
+            currentCardsList.filter(card => card.id !== currentCardId) :
+            currentCardsList;
 
         if (eligibleCards.length === 0) return currentCardsList.at(0);
         if (eligibleCards.length === 1) return eligibleCards.at(0);

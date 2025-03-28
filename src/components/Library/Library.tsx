@@ -32,7 +32,7 @@ export default function Library() {
             setDecks(data);
             dispatch(Notifications.notifySuccess("Decks loaded correctly"));
         }).catch((error) => {
-            console.log(error);
+            console.error(error);
             let formattedError = error.toString();
 
             if (error.toString().includes("File size")) {
