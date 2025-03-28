@@ -28,11 +28,11 @@ export const CardsService = {
         }
     },
 
-    async updateCardWeight(weightType: WeightType, cardTitle: string) {
+    async updateCardWeight(weightType: WeightType, cardId: string) {
         try {
             const response = await axios.put<DeckModel>(
-                `${baseUrl}${cardsUrl}`,
-                {cardTitle, weightType: weightType.toString()},
+                `${baseUrl}${cardsUrl}${cardId}`,
+                {weightType: weightType},
                 {headers: {"Content-Type": "application/json"}}
             );
 

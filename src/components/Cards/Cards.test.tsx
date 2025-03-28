@@ -29,6 +29,7 @@ vi.mock("../../hooks/useDemo", () => ({
 describe('Card view', () => {
     const mockHandleWeight = vi.fn();
     const mockCalculateProbabilities = vi.fn();
+    const mockCalculateAdjustedRates = vi.fn();
     const mockGetRandomCard = vi.fn();
 
     const cards: CardModel[] = [card1, card2];
@@ -36,9 +37,10 @@ describe('Card view', () => {
     beforeEach(() => {
         // Mock useDemo to return specific methods
         (vi.mocked(useDemo)).mockReturnValue({
-            getRandomCard: mockGetRandomCard,
-            calculateProbabilities: mockCalculateProbabilities,
             handleWeight: mockHandleWeight,
+            calculateProbabilities: mockCalculateProbabilities,
+            calculateAdjustedRates: mockCalculateAdjustedRates,
+            getRandomCard: mockGetRandomCard,
         });
     });
 
@@ -73,6 +75,7 @@ describe('Card view', () => {
         mockGetRandomCard
             .mockReturnValueOnce(firstCard)
             .mockReturnValueOnce(secondCard);
+        mockCalculateAdjustedRates.mockReturnValue(cards);
 
         render(<Cards/>);
 

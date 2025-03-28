@@ -79,7 +79,7 @@ export default function CreateDeckAutomaticallyModal(props: CreateDeckAutomatica
             setNewDeck(data);
             dispatch(Notifications.notifyInfo("Deck created correctly", 2000));
         }).catch((error) => {
-            console.log(error);
+            console.error(error);
             dispatch(Notifications.notifyError(error.toString(), 4000));
         }).finally(() => {
             setLoading(false);
@@ -191,7 +191,8 @@ export default function CreateDeckAutomaticallyModal(props: CreateDeckAutomatica
             <DialogActions>
                 <Button onClick={(event: object) => handleCloseModal(event, "close")}>Close</Button>
 
-                <Button data-testid="create-button" onClick={(event: object) => saveChanges(event, "close")} disabled={hasErrors}>Create</Button>
+                <Button data-testid="create-button" onClick={(event: object) => saveChanges(event, "close")}
+                        disabled={hasErrors}>Create</Button>
             </DialogActions>
         </Dialog>
     );
